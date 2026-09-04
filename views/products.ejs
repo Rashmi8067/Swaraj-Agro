@@ -1,0 +1,22 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title><% if(q){ %>Search: <%= q %> — <% } else if(category){ %><%= category %> — <% } %><%= site.company.name %></title><link rel="stylesheet" href="/style.css"></head><body>
+<header class="nav"><a class="brand" href="/"><% if(site.company.logo){ %><img class="brand-logo" src="<%= site.company.logo %>" alt="<%= site.company.name %> logo"><% } else { %><span class="brand-mark">DS</span><% } %><span><strong><%= site.company.name %></strong><small>Agro • Solar • Equipment</small></span></a><nav><a href="/#about">About</a><a href="/products">Products</a><a href="/#branches">Branches</a><a href="/#contact">Contact</a><a class="admin-link" href="/admin/login">Admin</a></nav></header>
+<main>
+<section class="section products-page">
+<div class="section-head"><div><span class="eyebrow">PRODUCTS & SERVICES</span><h2><% if(q){ %>Results for &ldquo;<%= q %>&rdquo;<% } else if(category){ %><%= category %><% } else { %>All Products<% } %></h2></div><p><%= items.length %> item<%= items.length===1?'':'s' %> found.</p></div>
+
+<form class="product-search" action="/products" method="get"><input type="text" name="q" value="<%= q %>" placeholder="Search products..." aria-label="Search products"><% if(category){ %><input type="hidden" name="category" value="<%= category %>"><% } %><button class="btn primary" type="submit">Search</button></form>
+
+<div class="category-grid two">
+<a class="category-card <%= category==='Solar Solution'?'active':'' %>" href="/products?category=<%= encodeURIComponent('Solar Solution') %><%= q?('&q='+encodeURIComponent(q)):'' %>"><span>01</span><strong>Solar Solution</strong><small>Rooftop & solar services</small></a>
+<a class="category-card <%= category==='Farm Machinery'?'active':'' %>" href="/products?category=<%= encodeURIComponent('Farm Machinery') %><%= q?('&q='+encodeURIComponent(q)):'' %>"><span>02</span><strong>Farm Machinery</strong><small>Equipment & harvesting</small></a>
+</div>
+<% if(category||q){ %><a class="clear-filter" href="/products">View all products</a><% } %>
+
+<div class="product-grid">
+<% items.forEach(p=>{ %><article class="card product"><div class="product-image"><% if(p.image){ %><img src="<%= p.image %>" alt="<%= p.name %>"><% } else { %><div class="placeholder-icon">✦</div><% } %><span><%= p.category %></span></div><div class="card-body"><span class="tag"><%= p.subcategory || p.category %></span><h3><%= p.name %></h3><p><%= p.description %></p><div class="sold-badge"><%= p.soldQuantity||0 %> sold</div><div class="product-footer"><strong><%= p.price %></strong><a href="/#contact">Enquire →</a></div></div></article><% }) %>
+</div>
+<% if(!items.length){ %><div class="empty-card"><h3>No products found</h3><p>Try a different search term, or browse all products from the buttons above.</p></div><% } %>
+</section>
+</main>
+<footer><div><strong><%= site.company.name %></strong><span>GSTIN: <%= site.company.gstin %></span></div><span>© <%= new Date().getFullYear() %> <%= site.company.name %>. All rights reserved.</span></footer>
+</body></html>
