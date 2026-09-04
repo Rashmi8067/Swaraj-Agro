@@ -1,0 +1,71 @@
+{
+  "company": {
+    "name": "DS Swaraj Agro",
+    "tagline": "Agro • Solar • Equipment",
+    "description": "DS Swaraj Agro provides reliable farm machinery and solar rooftop solutions for farmers, homes and businesses, with practical local support.",
+    "gstin": "21CIIPB9638R2ZP",
+    "address": "Sahoo Complex, Gokhana Bazar, NC College Road, Jajpur, 755007",
+    "email": "swarajagro@proton.me",
+    "phones": ["8763645106", "7608058076"],
+    "logo": "",
+    "bannerImage": "",
+    "heroTitle": "Powering Farms. Building Better.",
+    "heroText": "Reliable farm machinery and solar rooftop solutions for farmers, homes and businesses.",
+    "about": "DS Swaraj Agro works across two core areas: farm machinery and solar rooftop solutions. We focus on dependable products, practical guidance and responsive local support.",
+    "stats": [
+      {"value": "2", "label": "Core business areas"},
+      {"value": "Solar", "label": "Authorized rooftop vendor"},
+      {"value": "Jajpur", "label": "Local service base"},
+      {"value": "Direct", "label": "Product & installation support"}
+    ],
+    "googleMapsUrl": "https://maps.app.goo.gl/wpYgXqZweD7wHVCL8"
+  },
+  "branches": [],
+  "products": [
+    {
+      "id": "solar-rooftop",
+      "name": "Solar Rooftop Installation",
+      "category": "Solar Solution",
+      "subcategory": "Rooftop Solar",
+      "price": "On Request",
+      "description": "Rooftop solar installation support under PM Suryaghar Muft Bijli Yojana. Contact us for eligibility, system sizing, documentation and installation assistance.",
+      "image": "",
+      "featured": true,
+      "soldQuantity": 0
+    },
+    {
+      "id": "rotavator",
+      "name": "Rotavator",
+      "category": "Farm Machinery",
+      "subcategory": "Soil Preparation",
+      "price": "Contact for Price",
+      "description": "Agricultural rotavator for soil preparation. Update model, specifications, price and photos from the admin dashboard.",
+      "featured": true,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "combine-harvester",
+      "name": "Combine Harvester",
+      "category": "Farm Machinery",
+      "subcategory": "Harvesting Machinery",
+      "price": "Contact for Price",
+      "description": "Harvesting machinery suitable for farming operations. Keep the listing updated with availability, model and current pricing.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "thresher",
+      "name": "Thresher",
+      "category": "Farm Machinery",
+      "subcategory": "Harvesting Machinery",
+      "price": "Contact for Price",
+      "description": "Agricultural threshing equipment. Product details and photographs can be maintained from the admin dashboard.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    }
+  ],
+  "photos": []
+}

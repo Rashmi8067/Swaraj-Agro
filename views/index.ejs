@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title><%= site.company.name %> — <%= site.company.tagline || 'Agro • Solar • Equipment' %></title>
+  <meta name="description" content="<%= site.company.description || 'Farm machinery and solar rooftop solutions from Swaraj Agro.' %>">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="home-page">
+  <%- include('partials/header', { activePage: 'home' }) %>
+  <main id="home">
+    <section class="home-hero">
+      <div class="home-hero-copy">
+        <span class="eyebrow">AGRO • SOLAR • A BETTER TOMORROW</span>
+        <h1><%= site.company.heroTitle || 'Powering Farms. Building Better.' %></h1>
+        <p class="home-lede"><%= site.company.heroText || site.company.description %></p>
+        <div class="home-hero-actions">
+          <a class="btn primary btn-lg" href="/solar-solutions">Explore Solar Solutions <span>→</span></a>
+          <a class="btn ghost btn-lg" href="/farm-machinery">View Farm Machinery <span>→</span></a>
+        </div>
+        <div class="trust-line"><span>✓</span><strong>Authorized Solar Vendor</strong><small>PM Surya Ghar Muft Bijli Yojana</small></div>
+      </div>
+      <div class="home-hero-visual">
+        <% if(site.company.bannerImage){ %>
+          <img src="<%= site.company.bannerImage %>" alt="<%= site.company.name %> solutions">
+        <% } else { %>
+          <div class="hero-scene" aria-label="Agriculture and solar visual">
+            <div class="scene-sun"></div><div class="scene-house"></div><div class="scene-roof"></div>
+            <div class="scene-panels"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <div class="scene-tractor"><span class="tractor-cab"></span><span class="tractor-body"></span><span class="wheel wheel-big"></span><span class="wheel wheel-small"></span><span class="tractor-hood"></span><span class="tractor-tool"></span></div>
+            <div class="scene-field"></div>
+          </div>
+        <% } %>
+      </div>
+    </section>
+
+    <section class="trust-stats" aria-label="Key trust points">
+      <div><strong>2</strong><span>Core business areas</span></div>
+      <div><strong>Solar</strong><span>Authorized rooftop vendor</span></div>
+      <div><strong>Jajpur</strong><span>Local service base</span></div>
+      <div><strong>Direct</strong><span>Product & installation support</span></div>
+    </section>
+
+    <section class="home-solutions section">
+      <div class="home-section-head"><div><span class="eyebrow">OUR SOLUTIONS</span><h2>Choose what you need.</h2></div><p>Go straight to the dedicated section for the service or equipment you are looking for.</p></div>
+      <div class="solution-grid">
+        <a class="solution-card solar" href="/solar-solutions"><div class="solution-icon">☀</div><div><span class="eyebrow">01</span><h3>Solar Solutions</h3><p>Rooftop solar support for homes, businesses and eligible PM Surya Ghar installations.</p></div><span class="solution-arrow">↗</span></a>
+        <a class="solution-card farm" href="/farm-machinery"><div class="solution-icon">⚙</div><div><span class="eyebrow">02</span><h3>Farm Machinery</h3><p>Practical equipment for soil preparation, harvesting and everyday farm operations.</p></div><span class="solution-arrow">↗</span></a>
+      </div>
+    </section>
+
+    <section class="home-moments section">
+      <div class="home-section-head"><div><span class="eyebrow">OUR MOMENTS</span><h2>See what we do.</h2></div><a class="photo-more" href="/photos">View all photos <span>→</span></a></div>
+      <div class="home-photo-preview">
+        <% if(!(site.photos || []).length){ %>
+          <div class="empty-card"><h3>Photos coming soon</h3><p>Photos uploaded from the admin dashboard will appear here.</p></div>
+        <% } else { %>
+          <% (site.photos || []).slice(0, 2).forEach(photo => { %>
+            <figure class="home-photo-card"><img src="<%= photo.image %>" alt="<%= photo.caption || site.company.name %>"><% if(photo.caption){ %><figcaption><%= photo.caption %></figcaption><% } %></figure>
+          <% }) %>
+        <% } %>
+      </div>
+    </section>
+
+    <section class="home-authorization"><div class="authorization-mark">✦</div><div><span class="eyebrow">TRUSTED SOLAR SUPPORT</span><h2>Authorized Solar Vendor</h2><p>Supporting rooftop installations under <strong>PM Surya Ghar Muft Bijli Yojana</strong>.</p></div><a class="btn ghost" href="/contact">Talk to our team →</a></section>
+
+    <section class="home-about section">
+      <div class="about-panel"><div><span class="eyebrow">ABOUT SWARAJ AGRO</span><h2>Built around practical solutions.</h2></div><div><p><%= site.company.about || site.company.description %></p><div class="about-chips"><span>Reliable products</span><span>Local support</span><span>Solar + Agriculture</span></div><a class="text-link" href="/about">Read more about us →</a></div></div>
+    </section>
+
+    <section class="home-contact"><div><span class="eyebrow">READY WHEN YOU ARE</span><h2>Need a machine or a solar solution?</h2><p>Get pricing, product information, installation guidance or branch details from our team.</p></div><div class="contact-cta"><a class="btn primary btn-lg" href="/contact">Get in touch <span>→</span></a><a class="btn dark btn-lg" href="/branches">Find a branch <span>→</span></a></div></section>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>

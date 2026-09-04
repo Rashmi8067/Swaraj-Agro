@@ -1,0 +1,35 @@
+<% const current = typeof activePage !== 'undefined' ? activePage : ''; %>
+<header class="nav <%= current === 'home' ? 'home-nav' : '' %>
+" >
+  <a class="brand" href="/" aria-label="<%= site.company.name %> home">
+    <% if(site.company.logo){ %>
+      <img class="brand-logo" src="<%= site.company.logo %>" alt="<%= site.company.name %> logo">
+    <% } else { %>
+      <img class="brand-logo brand-logo-default" src="/swaraj-agro-default.svg" alt="Swaraj Agro logo">
+    <% } %>
+    <span><strong><%= site.company.name %></strong><small>Agro • Solar • Equipment</small></span>
+  </a>
+  <nav class="desktop-nav" aria-label="Primary navigation">
+    <a class="<%= current === 'home' ? 'active' : '' %>" href="/">Home</a>
+    <a class="<%= current === 'solar' ? 'active' : '' %>" href="/solar-solutions">Solar Solutions</a>
+    <a class="<%= current === 'farm' ? 'active' : '' %>" href="/farm-machinery">Farm Machinery</a>
+    <a class="<%= current === 'branches' ? 'active' : '' %>" href="/branches">Branches</a>
+    <a class="<%= current === 'photos' ? 'active' : '' %>" href="/photos">Photos</a>
+    <a class="<%= current === 'about' ? 'active' : '' %>" href="/about">About</a>
+    <a class="<%= current === 'contact' ? 'active' : '' %>" href="/contact">Contact</a>
+    <a class="admin-link" href="/admin/login">Admin</a>
+  </nav>
+  <details class="mobile-menu">
+    <summary aria-label="Open navigation">Menu</summary>
+    <div class="mobile-menu-panel">
+      <a href="/">Home</a>
+      <a href="/solar-solutions">Solar Solutions</a>
+      <a href="/farm-machinery">Farm Machinery</a>
+      <a href="/branches">Branches</a>
+      <a href="/photos">Photos</a>
+      <a href="/about">About</a>
+      <a href="/contact">Contact</a>
+      <a href="/admin/login">Admin</a>
+    </div>
+  </details>
+</header>
