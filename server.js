@@ -70,9 +70,31 @@ function smtpTransport(){
 const otpStore={};
 function setFlash(req,type,msg){ req.session.flash={type,msg}; }
 
+// --- PUBLIC ROUTES ---
 app.get('/',async(req,res,next)=>{ try{ res.render('index',{site:await store.read()}); }catch(e){next(e);} });
 app.get('/contact',(req,res)=>res.redirect('/#contact'));
 
+// Dynamic Products Route (Reads from products.json)
+app.get('/products', (req, res) => {
+  const filePath = path.join(__dirname, 'products.json');
+  
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading products.json file:', err);
+      return res.status(500).send('Server Error');
+    }
+    
+    try {
+      const products = JSON.parse(data);
+      res.render('products', { products });
+    } catch (parseErr) {
+      console.error('Error parsing products.json file:', parseErr);
+      return res.status(500).send('Invalid product data');
+    }
+  });
+});
+
+// --- ADMIN ROUTES ---
 app.get('/admin/login',async(req,res,next)=>{ try{
   if(req.session.admin) return res.redirect('/admin');
   res.render('login',{error:null,resetEmail:await auth.getResetEmail()});
