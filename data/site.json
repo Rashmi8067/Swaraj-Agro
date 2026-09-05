@@ -1,0 +1,388 @@
+{
+  "company": {
+    "name": "Swaraj Agro",
+    "tagline": "Agro • Solar • Equipment",
+    "description": "Swaraj Agro provides reliable farm machinery and solar rooftop solutions for farmers, homes and businesses, with practical local support.",
+    "gstin": "21CIIPB9638R2ZP",
+    "address": "Sahoo Complex, Gokhana Bazar, NC College Road, Jajpur, 755007",
+    "email": "swarajagro@proton.me",
+    "phones": [
+      "8763645106",
+      "7608058076"
+    ],
+    "logo": "",
+    "bannerImage": "",
+    "heroTitle": "Powering Farms. Building Better.",
+    "heroText": "Reliable farm machinery and solar rooftop solutions to help farmers, homes and businesses grow a cleaner, stronger tomorrow.",
+    "about": "Swaraj Agro works across two core areas: farm machinery and solar rooftop solutions. We focus on dependable products, practical guidance and responsive local support.",
+    "stats": [
+      {
+        "value": "2",
+        "label": "Business Verticals"
+      },
+      {
+        "value": "Farm",
+        "label": "Machinery Solutions"
+      },
+      {
+        "value": "Solar",
+        "label": "Rooftop Solutions"
+      },
+      {
+        "value": "Jajpur",
+        "label": "Local Support Base"
+      },
+      {
+        "value": "Trusted",
+        "label": "Local Team"
+      }
+    ],
+    "googleMapsUrl": "https://maps.app.goo.gl/wpYgXqZweD7wHVCL8"
+  },
+  "branches": [],
+  "products": [
+    {
+      "id": "catalog-v1-1-multi-crop-harvester-fieldking",
+      "name": "Multi Crop Harvester",
+      "category": "Farm Machinery",
+      "subcategory": "Harvesting",
+      "price": "₹ 2,640,000",
+      "description": "Multi Crop Harvester from Fieldking, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Fieldking.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-2-multi-crop-thresher-vardhman",
+      "name": "Multi Crop Thresher",
+      "category": "Farm Machinery",
+      "subcategory": "Threshing",
+      "price": "₹ 271,000",
+      "description": "Multi Crop Thresher from Vardhman, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Vardhman.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-3-rotavator-fieldking",
+      "name": "Rotavator",
+      "category": "Farm Machinery",
+      "subcategory": "Tillage",
+      "price": "₹ 142,000",
+      "description": "Rotavator from Fieldking, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Fieldking.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-4-sheller-cum-polisher-surjeet",
+      "name": "Sheller cum Polisher",
+      "category": "Farm Machinery",
+      "subcategory": "Crop Processing",
+      "price": "₹ 200,000",
+      "description": "Sheller cum Polisher from Surjeet, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Surjeet.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-5-power-weeder-alap",
+      "name": "Power Weeder",
+      "category": "Farm Machinery",
+      "subcategory": "Tillage & Weeding",
+      "price": "₹ 23,000",
+      "description": "Power Weeder from Alap, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Alap.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-6-mini-rice-mill-annpurna",
+      "name": "Mini Rice Mill",
+      "category": "Farm Machinery",
+      "subcategory": "Rice Processing",
+      "price": "₹ 20,000",
+      "description": "Mini Rice Mill from Annpurna, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Annpurna.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-7-mini-rice-mill-heavytech",
+      "name": "Mini Rice Mill",
+      "category": "Farm Machinery",
+      "subcategory": "Rice Processing",
+      "price": "₹ 22,000",
+      "description": "Mini Rice Mill from HeavyTech, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: HeavyTech.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-8-rubber-sheller-satya-subhra-industries",
+      "name": "Rubber Sheller",
+      "category": "Farm Machinery",
+      "subcategory": "Crop Processing",
+      "price": "₹ 25,000",
+      "description": "Rubber Sheller from Satya Subhra Industries, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Satya Subhra Industries.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-9-rubber-sheller-sechanam",
+      "name": "Rubber Sheller",
+      "category": "Farm Machinery",
+      "subcategory": "Crop Processing",
+      "price": "₹ 30,000",
+      "description": "Rubber Sheller from Sechanam, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Sechanam.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-10-pulverizer-alishan",
+      "name": "Pulverizer",
+      "category": "Farm Machinery",
+      "subcategory": "Crop Processing",
+      "price": "₹ 18,000",
+      "description": "Pulverizer from Alishan, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Alishan.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-11-petrol-pumpset-1-5-bonhoeffer",
+      "name": "Petrol PumpSet 1.5\"",
+      "category": "Farm Machinery",
+      "subcategory": "Pumps & Irrigation",
+      "price": "₹ 19,000",
+      "description": "Petrol PumpSet 1.5\" from Bonhoeffer, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Bonhoeffer.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-12-petrol-pumpset-1-5-ss-gold",
+      "name": "Petrol PumpSet 1.5\"",
+      "category": "Farm Machinery",
+      "subcategory": "Pumps & Irrigation",
+      "price": "₹ 12,500",
+      "description": "Petrol PumpSet 1.5\" from SS Gold, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: SS Gold.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-13-petrol-pumpset-1-5-greeves",
+      "name": "Petrol PumpSet 1.5\"",
+      "category": "Farm Machinery",
+      "subcategory": "Pumps & Irrigation",
+      "price": "₹ 115,100",
+      "description": "Petrol PumpSet 1.5\" from Greeves, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Greeves.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-14-petrol-pumpset-1-5-supremoto",
+      "name": "Petrol PumpSet 1.5\"",
+      "category": "Farm Machinery",
+      "subcategory": "Pumps & Irrigation",
+      "price": "₹ 9,500",
+      "description": "Petrol PumpSet 1.5\" from Supremoto, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Supremoto.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-15-petrol-pumpset-2-bonhoeffer",
+      "name": "Petrol PumpSet 2\"",
+      "category": "Farm Machinery",
+      "subcategory": "Pumps & Irrigation",
+      "price": "₹ 24,000",
+      "description": "Petrol PumpSet 2\" from Bonhoeffer, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Bonhoeffer.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-16-petrol-pumpset-2-kisan-kraft",
+      "name": "Petrol PumpSet 2\"",
+      "category": "Farm Machinery",
+      "subcategory": "Pumps & Irrigation",
+      "price": "₹ 13,500",
+      "description": "Petrol PumpSet 2\" from Kisan Kraft, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Kisan Kraft.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-17-petrol-pumpset-2-sechanam",
+      "name": "Petrol PumpSet 2\"",
+      "category": "Farm Machinery",
+      "subcategory": "Pumps & Irrigation",
+      "price": "₹ 12,500",
+      "description": "Petrol PumpSet 2\" from Sechanam, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Sechanam.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-18-petrol-pumpset-3-sonalako-gold",
+      "name": "Petrol PumpSet 3\"",
+      "category": "Farm Machinery",
+      "subcategory": "Pumps & Irrigation",
+      "price": "₹ 11,500",
+      "description": "Petrol PumpSet 3\" from Sonalako Gold, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Sonalako Gold.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-19-petrol-pumpset-3-kisan-kraft",
+      "name": "Petrol PumpSet 3\"",
+      "category": "Farm Machinery",
+      "subcategory": "Pumps & Irrigation",
+      "price": "₹ 15,000",
+      "description": "Petrol PumpSet 3\" from Kisan Kraft, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Kisan Kraft.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-20-electric-pumpset-1-5-agriculture-chetak",
+      "name": "Electric PumpSet 1.5\" (Agriculture)",
+      "category": "Farm Machinery",
+      "subcategory": "Pumps & Irrigation",
+      "price": "₹ 8,000",
+      "description": "Electric PumpSet 1.5\" (Agriculture) from Chetak, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Chetak.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-21-electric-pumpset-2-agriculture-chetak",
+      "name": "Electric PumpSet 2\" (Agriculture)",
+      "category": "Farm Machinery",
+      "subcategory": "Pumps & Irrigation",
+      "price": "₹ 11,500",
+      "description": "Electric PumpSet 2\" (Agriculture) from Chetak, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Chetak.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-22-electric-pumpset-3-agriculture-chetak",
+      "name": "Electric PumpSet 3\" (Agriculture)",
+      "category": "Farm Machinery",
+      "subcategory": "Pumps & Irrigation",
+      "price": "₹ 15,000",
+      "description": "Electric PumpSet 3\" (Agriculture) from Chetak, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Chetak.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-23-electric-pumpset-1-home-use-havells",
+      "name": "Electric PumpSet 1\" (Home Use)",
+      "category": "Farm Machinery",
+      "subcategory": "Pumps & Irrigation",
+      "price": "₹ 6,500",
+      "description": "Electric PumpSet 1\" (Home Use) from Havells, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Havells.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-24-rice-puffing-machine-satya-subhra-industries",
+      "name": "Rice Puffing Machine",
+      "category": "Farm Machinery",
+      "subcategory": "Rice Processing",
+      "price": "₹ 118,000",
+      "description": "Rice Puffing Machine from Satya Subhra Industries, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Satya Subhra Industries.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-25-rice-flattening-machine-satya-subhra-industries",
+      "name": "Rice Flattening Machine",
+      "category": "Farm Machinery",
+      "subcategory": "Rice Processing",
+      "price": "₹ 125,000",
+      "description": "Rice Flattening Machine from Satya Subhra Industries, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Satya Subhra Industries.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-26-oil-mill-satya-subhra-industries",
+      "name": "Oil Mill",
+      "category": "Farm Machinery",
+      "subcategory": "Oil Processing",
+      "price": "₹ 45,000",
+      "description": "Oil Mill from Satya Subhra Industries, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Satya Subhra Industries.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-27-paddy-thresher-agreameate",
+      "name": "Paddy Thresher",
+      "category": "Farm Machinery",
+      "subcategory": "Threshing",
+      "price": "₹ 40,000",
+      "description": "Paddy Thresher from Agreameate, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Agreameate.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-28-power-paddy-thresher-generic",
+      "name": "Power Paddy Thresher",
+      "category": "Farm Machinery",
+      "subcategory": "Threshing",
+      "price": "₹ 25,500",
+      "description": "Power Paddy Thresher for practical farm operations, designed to support efficient day-to-day agricultural work.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-29-wet-grinder-bhardwaj",
+      "name": "Wet Grinder",
+      "category": "Farm Machinery",
+      "subcategory": "Food Processing",
+      "price": "₹ 25,000",
+      "description": "Wet Grinder from Bhardwaj, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Bhardwaj.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-30-wet-grinder-laxmi-agro",
+      "name": "Wet Grinder",
+      "category": "Farm Machinery",
+      "subcategory": "Food Processing",
+      "price": "₹ 7,000",
+      "description": "Wet Grinder from Laxmi Agro, suitable for dependable farm operations and practical day-to-day agricultural work. Brand: Laxmi Agro.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    },
+    {
+      "id": "catalog-v1-31-solar-jhatka-machine-generic",
+      "name": "Solar Jhatka Machine",
+      "category": "Farm Machinery",
+      "subcategory": "Farm Protection",
+      "price": "₹ 9,500",
+      "description": "Solar Jhatka Machine for practical farm operations, designed to support efficient day-to-day agricultural work.",
+      "featured": false,
+      "soldQuantity": 0,
+      "image": ""
+    }
+  ],
+  "photos": [],
+  "productCatalogSeedVersion": 1
+}
