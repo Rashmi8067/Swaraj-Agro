@@ -1,0 +1,45 @@
+{
+  "company": {
+    "name": "Swaraj Agro",
+    "tagline": "Agro \u2022 Solar \u2022 Equipment",
+    "description": "Swaraj Agro provides reliable farm machinery and solar rooftop solutions for farmers, homes and businesses, with practical local support.",
+    "gstin": "21CIIPB9638R2ZP",
+    "address": "Sahoo Complex, Gokhana Bazar, NC College Road, Jajpur, 755007",
+    "email": "swarajagro@proton.me",
+    "phones": [
+      "8763645106",
+      "7608058076"
+    ],
+    "logo": "",
+    "bannerImage": "",
+    "heroTitle": "Powering Farms. Building Better.",
+    "heroText": "Reliable farm machinery and solar rooftop solutions to help farmers, homes and businesses grow a cleaner, stronger tomorrow.",
+    "about": "Swaraj Agro works across two core areas: farm machinery and solar rooftop solutions. We focus on dependable products, practical guidance and responsive local support.",
+    "stats": [
+      {
+        "value": "2",
+        "label": "Business Verticals"
+      },
+      {
+        "value": "Farm",
+        "label": "Machinery Solutions"
+      },
+      {
+        "value": "Solar",
+        "label": "Rooftop Solutions"
+      },
+      {
+        "value": "Jajpur",
+        "label": "Local Support Base"
+      },
+      {
+        "value": "Trusted",
+        "label": "Local Team"
+      }
+    ],
+    "googleMapsUrl": "https://maps.app.goo.gl/wpYgXqZweD7wHVCL8"
+  },
+  "branches": [],
+  "products": [],
+  "photos": []
+}
