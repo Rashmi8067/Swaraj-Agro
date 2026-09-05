@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title><%= site.company.name %> — <%= site.company.tagline || 'Agro • Solar • Equipment' %></title>
+  <meta name="description" content="<%= site.company.description || 'Farm machinery and solar rooftop solutions from Swaraj Agro.' %>">
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="home-page reference-home">
+  <%- include('partials/header', { activePage: 'home' }) %>
+  <main>
+    <section class="reference-hero" aria-labelledby="hero-title">
+      <div class="reference-hero-copy">
+        <span class="eyebrow">AGRO&nbsp;&nbsp; • &nbsp;&nbsp;SOLAR&nbsp;&nbsp; • &nbsp;&nbsp;A BETTER TOMORROW</span>
+        <h1 id="hero-title">Powering Farms.<br>Building <span>Better.</span></h1>
+        <p><%= site.company.heroText || 'Reliable farm machinery and solar rooftop solutions to help farmers, homes and businesses grow a cleaner, stronger tomorrow.' %></p>
+        <div class="reference-actions">
+          <a class="ref-cta ref-cta-farm" href="/farm-machinery">
+            <span class="outline-icon tractor-icon" aria-hidden="true"><svg viewBox="0 0 64 44"><path d="M7 32h38M10 32V21h16l4-9h8l4 9h10v11M18 32a7 7 0 1 0-14 0M49 32a6 6 0 1 0-12 0M29 12h12M30 21h17"/></svg></span>
+            <span><strong>Farm Machinery</strong><small>Explore Products</small></span><b>→</b>
+          </a>
+          <a class="ref-cta ref-cta-solar" href="/solar-solutions">
+            <span class="outline-icon sun-icon" aria-hidden="true"><svg viewBox="0 0 64 44"><circle cx="32" cy="22" r="9"/><path d="M32 4v7M32 33v7M14 22h7M43 22h7M19 9l5 5M40 30l5 5M45 9l-5 5M24 30l-5 5"/></svg></span>
+            <span><strong>Solar Solutions</strong><small>Clean Energy for Tomorrow</small></span><b>→</b>
+          </a>
+        </div>
+      </div>
+      <div class="reference-hero-art" aria-hidden="true">
+        <div class="hero-photo hero-photo-full"></div>
+        <div class="hero-sun-glow"></div>
+        <div class="hero-haze"></div>
+        <div class="hero-script">Clean Energy<br>Greener Fields<br>Stronger Communities</div>
+      </div>
+    </section>
+
+    <section class="reference-stats" aria-label="Key trust points">
+      <div><span class="stat-icon stat-people"><svg viewBox="0 0 32 32"><path d="M10 15a5 5 0 1 0 0-10 5 5 0 0 0 0 10Zm12-1a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM2 27c0-5 3-8 8-8s8 3 8 8M17 27c0-4 2-7 7-7 4 0 6 3 6 7"/></svg></span><strong>1000+</strong><small>Happy Customers</small></div>
+      <div><span class="stat-icon"><svg viewBox="0 0 32 32"><path d="M13 3h6l1.2 4.1a10 10 0 0 1 2.8 1.6L27 7l3 5-3.3 3a10 10 0 0 1 0 3.4L30 21l-3 5-4-1.7a10 10 0 0 1-2.8 1.6L19 30h-6l-1.2-4.1a10 10 0 0 1-2.8-1.6L5 26l-3-5 3.3-3a10 10 0 0 1 0-3.4L2 12l3-5 4 1.7a10 10 0 0 1 2.8-1.6L13 3Zm3 18a4 4 0 1 0 0-8 4 4 0 0 0 0 8Z"/></svg></span><strong>Wide Range</strong><small>Farm Equipment</small></div>
+      <div><span class="stat-icon"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="6"/><path d="M16 2v5M16 25v5M2 16h5M25 16h5M6.1 6.1l3.5 3.5M22.4 22.4l3.5 3.5M25.9 6.1l-3.5 3.5M9.6 22.4l-3.5 3.5"/></svg></span><strong>Trusted</strong><small>Solar Vendor</small></div>
+      <div><span class="stat-icon"><svg viewBox="0 0 32 32"><path d="M16 29s10-8.4 10-16A10 10 0 1 0 6 13c0 7.6 10 16 10 16Z"/><circle cx="16" cy="13" r="3.2"/></svg></span><strong>Multiple</strong><small>Branches</small></div>
+    </section>
+
+    <section class="reference-moments section">
+      <div class="reference-section-head">
+        <div><span class="eyebrow">OUR MOMENTS</span><h2>Glimpses from Our Journey</h2></div>
+        
+      </div>
+      <div class="reference-gallery-preview">
+        <% if((site.photos || []).some(photo => photo.homeFeatured)){ %>
+          <% (site.photos || []).filter(photo => photo.homeFeatured).slice(0,4).forEach(photo => { %>
+            <figure class="gallery-preview-card"><img src="<%= photo.image %>" alt="<%= photo.caption || site.company.name %>"><% if(photo.caption){ %><figcaption><%= photo.caption %></figcaption><% } %></figure>
+          <% }) %>
+        <% } else { %>
+          <figure class="gallery-preview-card"><img src="/assets/home-photo-1.jpg" alt="Swaraj Agro farm machinery visual"><figcaption>Farm machinery</figcaption></figure>
+          <figure class="gallery-preview-card"><img src="/assets/home-photo-2.jpg" alt="Swaraj Agro solar visual"><figcaption>Solar rooftop solutions</figcaption></figure>
+          <figure class="gallery-preview-card"><img src="/assets/home-photo-1.jpg" alt="Swaraj Agro machinery visual"><figcaption>Our work</figcaption></figure>
+          <figure class="gallery-preview-card"><img src="/assets/home-photo-2.jpg" alt="Swaraj Agro solar installation visual"><figcaption>Solar installation</figcaption></figure>
+        <% } %>
+        <a class="view-all-label" href="/photos">View all photos</a>
+      </div>
+    </section>
+
+    <section class="reference-contact-cta">
+      <div><span class="eyebrow">READY WHEN YOU ARE</span><h2>Need a machine or a solar solution?</h2><p>Our team is here to help you choose the right solution.</p></div>
+      <a class="ref-cta ref-cta-primary" href="/contact">Get in touch <b>→</b></a>
+    </section>
+  </main>
+  <%- include('partials/footer') %>
+</body>
+</html>
