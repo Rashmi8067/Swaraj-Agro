@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 150" role="img" aria-label="Swaraj Agro logo">
+  <defs>
+    <linearGradient id="leaf" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b6b49"/><stop offset="1" stop-color="#6aa93d"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(18 18)">
+    <text x="0" y="68" font-family="Arial, Helvetica, sans-serif" font-size="67" font-weight="800" letter-spacing="-3" fill="#0d5b40">swaraj</text>
+    <path d="M286 15c13-18 29-23 39-22-4 16-14 29-33 34" fill="url(#leaf)"/>
+    <path d="M2 82h286" stroke="#70a93f" stroke-width="4" stroke-linecap="round"/>
+    <text x="70" y="116" font-family="Arial, Helvetica, sans-serif" font-size="29" font-weight="700" letter-spacing="10" fill="#70a93f">AGRO</text>
+  </g>
+</svg>
