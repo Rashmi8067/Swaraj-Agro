@@ -1,0 +1,68 @@
+<div class="product-modal" id="product-modal" aria-hidden="true">
+  <div class="product-modal-backdrop" data-close-product></div>
+  <div class="product-modal-card" role="dialog" aria-modal="true">
+    <button class="modal-close" type="button" data-close-product aria-label="Close">×</button>
+    <div class="product-modal-gallery">
+      <button class="gallery-nav prev" type="button" aria-label="Previous photo">‹</button>
+      <img id="product-modal-image" src="" alt="">
+      <button class="gallery-nav next" type="button" aria-label="Next photo">›</button>
+      <div class="gallery-counter" id="product-gallery-counter"></div>
+    </div>
+    <div class="product-modal-info">
+      <span class="tag" id="product-modal-category"></span>
+      <h2 id="product-modal-name"></h2>
+      <div class="product-meta"><span id="product-modal-brand"></span><strong id="product-modal-price"></strong></div>
+      <p id="product-modal-description"></p>
+      <div class="product-action-buttons">
+        <a class="btn primary" id="product-call-button" href="tel:">Call</a>
+        <button class="btn ghost" id="product-inquiry-button" type="button">Inquiry</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="enquiry-popup" id="enquiry-popup" aria-hidden="true">
+  <div class="enquiry-popup-card" role="dialog" aria-modal="true" aria-labelledby="enquiry-title">
+    <button class="enquiry-close" id="enquiry-close" type="button" aria-label="Close">×</button>
+    <div id="enquiry-form-view">
+      <h3 id="enquiry-title">Product enquiry</h3>
+      <p id="enquiry-product-label"></p>
+      <form id="product-enquiry-form">
+        <label>Your name<input id="enquiry-name" name="name" required autocomplete="name" placeholder="Your name"></label>
+        <label>Mobile number<input id="enquiry-phone" name="phone" required inputmode="tel" autocomplete="tel" placeholder="Your mobile number"></label>
+        <button class="btn primary" type="submit">Submit Enquiry →</button>
+      </form>
+    </div>
+    <div class="enquiry-success" id="enquiry-success-view" hidden>
+      <div class="enquiry-success-icon">✓</div>
+      <h3>successfully submitted, our team will contact you shortly</h3>
+      <button class="btn primary" type="button" id="enquiry-done">Done</button>
+    </div>
+  </div>
+</div>
+<script>
+(()=>{
+  const productData=<%- JSON.stringify(items).replace(/</g,'\u003c') %>;
+  const pm=document.getElementById('product-modal'), pmi=document.getElementById('product-modal-image'), pmn=document.getElementById('product-modal-name'), pmb=document.getElementById('product-modal-brand'), pmp=document.getElementById('product-modal-price'), pmd=document.getElementById('product-modal-description'), pmc=document.getElementById('product-modal-category'), pgc=document.getElementById('product-gallery-counter');
+  const callBtn=document.getElementById('product-call-button'), inquiryBtn=document.getElementById('product-inquiry-button');
+  const ep=document.getElementById('enquiry-popup'), ef=document.getElementById('product-enquiry-form'), nameEl=document.getElementById('enquiry-name'), phoneEl=document.getElementById('enquiry-phone'), productLabel=document.getElementById('enquiry-product-label'), formView=document.getElementById('enquiry-form-view'), successView=document.getElementById('enquiry-success-view');
+  let currentProduct=null,currentPhoto=0;
+  function productGallery(){return (currentProduct.gallery&&currentProduct.gallery.length?currentProduct.gallery:[currentProduct.image]).filter(Boolean)}
+  function productPhone(){return currentProduct && currentProduct.category==='Solar Solution'?'9861515980':'7735903203'}
+  function renderProduct(){const g=productGallery();pmi.src=g[currentPhoto]||'';pmi.alt=currentProduct.name||'';pmn.textContent=currentProduct.name||'';pmb.textContent=currentProduct.brand?`Brand: ${currentProduct.brand}`:'';pmp.textContent=currentProduct.price||'Contact for Price';pmd.textContent=currentProduct.description||'';pmc.textContent=currentProduct.subcategory||currentProduct.category||'';pgc.textContent=g.length>1?`${currentPhoto+1} / ${g.length}`:'';callBtn.href=`tel:${productPhone()}`;}
+  function openProduct(id){currentProduct=productData.find(p=>p.id===id);if(!currentProduct)return;currentPhoto=0;renderProduct();pm.classList.add('open');pm.setAttribute('aria-hidden','false');document.body.classList.add('modal-open')}
+  function closeProduct(){pm.classList.remove('open');pm.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open')}
+  function openInquiry(){if(!currentProduct)return;productLabel.textContent=`Enquiry for: ${currentProduct.name}`;formView.hidden=false;successView.hidden=true;ep.classList.add('open');ep.setAttribute('aria-hidden','false');nameEl.focus()}
+  function closeInquiry(){ep.classList.remove('open');ep.setAttribute('aria-hidden','true')}
+  document.querySelectorAll('[data-product-id]').forEach(x=>x.addEventListener('click',()=>openProduct(x.dataset.productId)));
+  pm.querySelectorAll('[data-close-product]').forEach(x=>x.addEventListener('click',closeProduct));
+  pm.querySelector('.prev').addEventListener('click',()=>{const g=productGallery();currentPhoto=(currentPhoto-1+g.length)%g.length;renderProduct()});
+  pm.querySelector('.next').addEventListener('click',()=>{const g=productGallery();currentPhoto=(currentPhoto+1)%g.length;renderProduct()});
+  inquiryBtn.addEventListener('click',openInquiry);
+  document.getElementById('enquiry-close').addEventListener('click',closeInquiry);
+  document.getElementById('enquiry-done').addEventListener('click',()=>{closeInquiry();closeProduct()});
+  ep.addEventListener('click',e=>{if(e.target===ep)closeInquiry()});
+  ef.addEventListener('submit',async e=>{e.preventDefault();const body=new URLSearchParams({name:nameEl.value.trim(),phone:phoneEl.value.trim(),product:currentProduct.name||'',category:currentProduct.category||''});try{const r=await fetch('/enquiry',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:body.toString()});const d=await r.json();if(!r.ok||!d.ok){alert(d.message||'Could not submit enquiry. Please try again.');return}formView.hidden=true;successView.hidden=false;}catch(err){alert('Something went wrong. Please try again.')}});
+  let sx=0;pm.querySelector('.product-modal-gallery').addEventListener('touchstart',e=>sx=e.touches[0].clientX,{passive:true});pm.querySelector('.product-modal-gallery').addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>45){const g=productGallery();currentPhoto=(currentPhoto+(dx<0?1:-1)+g.length)%g.length;renderProduct()}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(ep.classList.contains('open'))closeInquiry();else if(pm.classList.contains('open'))closeProduct()}if(!pm.classList.contains('open'))return;if(e.key==='ArrowLeft')pm.querySelector('.prev').click();if(e.key==='ArrowRight')pm.querySelector('.next').click()});
+})();
+</script>
