@@ -1,0 +1,35 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Request Solar Quotation — <%= site.company.name %></title><link rel="stylesheet" href="/style.css"></head><body>
+<%- include('partials/header') %>
+<main>
+<section class="page-hero section"><span class="eyebrow">SOLAR QUOTATION</span><h1>Request a solar quotation.</h1><p>Tell us about your requirement. We’ll use your selections to prepare the quotation.</p></section>
+<section class="section quotation-section"><form id="quotation-form" class="quotation-card">
+<div class="quotation-form-head"><span class="eyebrow">01 • CONSUMER DETAILS</span><h2>Your information</h2></div>
+<div class="quotation-fields">
+<label>Name<input name="name" required placeholder="Full name"></label>
+<label>Phone number<input name="phone" required inputmode="tel" placeholder="Phone number"></label>
+<label>Relation's name<input name="relationName" placeholder="Father / spouse / guardian name"></label>
+<label>Village<input name="village" required placeholder="Village"></label>
+<label>Post<input name="post" required placeholder="Post office"></label>
+<label>Block<input name="block" required placeholder="Block"></label>
+<label>District<input name="district" required placeholder="District"></label>
+<label>State<input id="state" name="state" required value="Odisha" placeholder="State"></label>
+<label>Pincode<input name="pincode" required inputmode="numeric" pattern="[0-9]{6}" placeholder="6-digit pincode"></label>
+</div>
+<div class="quotation-form-head"><span class="eyebrow">02 • SOLAR SYSTEM</span><h2>Choose your requirement</h2></div>
+<div class="solar-quote-fields">
+<label>Panel company<select name="panel" required><option value="">Select panel company</option><option>Loom</option><option>Adani</option><option>Waaree</option></select></label>
+<label>System type<select name="systemType" id="systemType" required><option value="">Select system type</option><option>On-grid</option><option>Off-grid</option><option>Hybrid</option></select></label>
+<div id="kwpWrap"></div>
+<div id="hybridWrap" hidden>
+<label>Inverter company<select name="inverter" id="inverter"><option value="">Select inverter company</option><option>Loom</option><option>Deye</option><option>Involtics</option></select></label>
+<label>Battery technology<select name="batteryTech" id="batteryTech"><option value="">Select battery technology</option><option>Li-ion</option><option>Lead</option></select></label>
+<div id="batteryAhWrap"></div>
+<div id="batteryQtyWrap" hidden><label>Battery quantity<select name="batteryQty"><option>1</option><option>2</option><option>3</option></select></label></div>
+</div>
+</div>
+<p class="quote-note">Pricing is shown only where a confirmed configuration is available. Other configurations can still be requested and will be quoted after review.</p>
+<label class="quote-message">Additional requirements <span class="fine">Optional</span><textarea name="message" placeholder="Anything else we should know?"></textarea></label>
+<button class="btn primary quote-submit" type="submit">Request Quotation →</button>
+</form></section></main>
+<div class="quote-success" id="quote-success" aria-hidden="true"><div class="quote-success-card"><span class="quote-success-icon">✓</span><h2>Your request has been submitted</h2><p id="quote-success-text">We have received your quotation request.</p><button class="btn primary" type="button" id="quote-success-close">Done</button></div></div>
+<script>(()=>{const f=document.getElementById('quotation-form'),type=document.getElementById('systemType'),kw=document.getElementById('kwpWrap'),hy=document.getElementById('hybridWrap'),bt=document.getElementById('batteryTech'),ah=document.getElementById('batteryAhWrap'),qty=document.getElementById('batteryQtyWrap');function opt(v,t){return `<option value="${v}">${t}</option>`}function sync(){const t=type.value;hy.hidden=t!=='Hybrid';if(t==='On-grid'){kw.innerHTML='<label>Required system size<select name="kwp" required>'+[2,3,4,5,6,7,8].map(n=>opt(n,n+' kWp')).join('')+'</select></label>'}else if(t==='Hybrid'){kw.innerHTML='<label>Required system size<select name="kwp" required>'+[2,3,4,5,6,7,8,9,10].map(n=>opt(n,n+' kWp')).join('')+'</select></label>'}else if(t==='Off-grid'){kw.innerHTML='<label>Required system size (kWp)<input name="kwp" type="number" min="2" step="0.1" required placeholder="Minimum 2 kWp"></label>'}else kw.innerHTML='';if(t!=='Hybrid'){hy.querySelectorAll('select,input').forEach(x=>x.disabled=true)}else{hy.querySelectorAll('select,input').forEach(x=>x.disabled=false)}batterySync()}function batterySync(){const t=bt.value;ah.innerHTML=t==='Li-ion'?'<label>Battery configuration<select name="batteryAh" required><option value="150 Ah">150 Ah</option><option value="200 Ah">200 Ah</option></select></label>':t==='Lead'?'<label>Battery configuration<select name="batteryAh" required><option value="150 Ah">150 Ah</option></select></label>':'';qty.hidden=t!=='Lead';qty.querySelector('select').disabled=t!=='Lead'}type.addEventListener('change',sync);bt.addEventListener('change',batterySync);sync();const success=document.getElementById('quote-success'),txt=document.getElementById('quote-success-text');f.addEventListener('submit',async e=>{e.preventDefault();const fd=new URLSearchParams(new FormData(f));try{const r=await fetch('/quotation/request',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:fd.toString()});const d=await r.json();if(!d.ok){alert(d.message||'Please check your details.');return}txt.textContent=`Request ${d.number} has been received. Our team will prepare your quotation.`;success.classList.add('open');success.setAttribute('aria-hidden','false');f.reset();document.getElementById('state').value='Odisha';sync()}catch(err){alert('Something went wrong. Please try again.')}});document.getElementById('quote-success-close').onclick=()=>{success.classList.remove('open');success.setAttribute('aria-hidden','true')};success.addEventListener('click',e=>{if(e.target===success){success.classList.remove('open');success.setAttribute('aria-hidden','true')}})})();</script><%- include('partials/footer') %></body></html>
