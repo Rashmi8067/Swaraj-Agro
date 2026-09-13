@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0d1c2d" />
+    <meta name="description" content="StockFlow inventory and ledger workspace — track stock, record sales and purchases, and keep your accounts balanced." />
+    <meta property="og:title" content="StockFlow — Inventory control" />
+    <meta property="og:description" content="Track stock, sales, purchases and ledger balances from one simple workspace." />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <title>StockFlow — Inventory control</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+    <main id="authView" class="auth-view">
+      <section class="auth-intro">
+        <a class="brand brand-light" href="#" aria-label="Swaraj Agro StockFlow home"><span class="brand-mark">S</span>stockflow.</a>
+        <div class="auth-copy">
+          <p class="eyebrow eyebrow-light">INVENTORY, ACCOUNTED FOR</p>
+          <h1>Your stock, sales and ledgers—always in balance.</h1>
+          <p>Run the daily details across Swaraj Agro’s business units with a clear answer to “what do we have, where is it, and what moved?”</p>
+        </div>
+        <div class="intro-proof">
+          <div class="proof-icon">↗</div>
+          <div><strong>Live inventory view</strong><span>Every movement updates stock and its ledger trail.</span></div>
+        </div>
+        <div class="intro-orbit orbit-one"></div><div class="intro-orbit orbit-two"></div>
+      </section>
+
+      <section class="auth-panel">
+        <div class="auth-card">
+          <p class="eyebrow">SECURE COMPANY</p>
+          <h2>Welcome back</h2>
+          <p class="auth-subtitle">Sign in to manage today’s inventory.</p>
+          <div class="role-switch" role="tablist" aria-label="Sign-in role">
+            <button class="role-tab active" type="button" data-role="admin" aria-selected="true">Admin access</button>
+            <button class="role-tab" type="button" data-role="staff" aria-selected="false">Staff access</button>
+          </div>
+          <form id="loginForm" novalidate>
+            <label>Email address<input id="loginEmail" type="email" autocomplete="email" placeholder="Enter your email" required /></label>
+            <label>Password<input id="loginPassword" type="password" autocomplete="current-password" placeholder="Enter your password" required /></label>
+            <div id="loginError" class="form-error" role="alert"></div>
+            <div class="form-row"><label class="check-label"><input type="checkbox" checked /> Keep me signed in</label><button class="text-button" type="button" id="showPassword">Show</button></div>
+            <button class="button button-primary button-full" type="submit">Sign in to StockFlow <span>→</span></button>
+          </form>
+        </div>
+        <p class="auth-footer">Swaraj Agro · StockFlow inventory system</p>
+      </section>
+    </main>
+
+    <div id="appView" class="app-shell hidden">
+      <aside class="sidebar" id="sidebar">
+        <div class="sidebar-top">
+          <a class="brand" href="#" aria-label="StockFlow dashboard"><span class="brand-mark">S</span>stockflow.</a>
+          <button id="closeSidebar" class="icon-button close-sidebar" type="button" aria-label="Close menu">×</button>
+        </div>
+        <div class="workspace-chip"><span class="workspace-symbol">G</span><span><strong>Swaraj Agro – Farm Machinery</strong><small>Farm machinery inventory</small></span><span class="chevron">⌄</span></div>
+        <nav class="main-nav" aria-label="Main navigation">
+          <p class="nav-label">COMPANY</p>
+          <button class="nav-item active" type="button" data-page="dashboard"><span class="nav-icon">▦</span>Overview</button>
+          <button class="nav-item" type="button" data-page="inventory"><span class="nav-icon">□</span>Products <span id="productNavCount" class="nav-count">24</span></button>
+          <button class="nav-item" type="button" data-page="transactions"><span class="nav-icon">↕</span>Sales &amp; purchases</button>
+          <button class="nav-item" type="button" data-page="ledger"><span class="nav-icon">▤</span>Ledger accounts</button>
+          <div class="nav-divider"></div>
+          <p class="nav-label admin-only">ADMIN</p>
+          <button class="nav-item admin-only" type="button" data-page="settings"><span class="nav-icon">⚙</span>Company settings</button>
+        </nav>
+        <div class="sidebar-user"><span id="sidebarAvatar" class="avatar admin-avatar">AR</span><span><strong id="sidebarUserName">Swaraj Agro Admin</strong><small id="sidebarUserRole">Administrator</small></span><button id="logoutButton" class="logout-button" type="button" aria-label="Log out">↪</button></div>
+      </aside>
+      <div id="backdrop" class="backdrop"></div>
+
+      <main class="main-area">
+        <header class="topbar">
+          <button id="menuButton" class="icon-button menu-button" type="button" aria-label="Open menu">☰</button>
+          <div class="breadcrumb"><span id="breadcrumbSection">Company</span><b>/</b><strong id="breadcrumbPage">Overview</strong></div>
+          <div class="topbar-actions"><button class="help-button" type="button" id="helpButton">?</button><span class="today-date" id="todayDate"></span><button id="quickEntry" class="button button-primary top-action">+ New entry</button></div>
+        </header>
+
+        <div class="content-wrap">
+          <section id="dashboardPage" class="page active-page">
+            <div class="page-heading"><div><p class="eyebrow">OVERVIEW</p><h1>Welcome, <span id="greetingName">Admin</span> <span class="wave">👋</span></h1><p>Here’s how Swaraj Agro – Farm Machinery is tracking today.</p></div><button class="button button-secondary" type="button" data-action="view-ledger">View ledger →</button></div>
+            <div class="metric-grid">
+              <article class="metric-card"><div class="metric-top"><span>Inventory value</span><span class="metric-icon blue">◈</span></div><strong id="inventoryValue">₹ 4,86,340</strong><p><b class="positive">↑ 8.4%</b> from last month</p></article>
+              <article class="metric-card"><div class="metric-top"><span>Sales this month</span><span class="metric-icon green">↗</span></div><strong>₹ 1,27,800</strong><p><b class="positive">↑ 12.1%</b> from last month</p></article>
+              <article class="metric-card"><div class="metric-top"><span>Purchase this month</span><span class="metric-icon purple">↓</span></div><strong>₹ 86,420</strong><p><b class="neutral">18 orders</b> placed this month</p></article>
+              <article class="metric-card"><div class="metric-top"><span>Low stock items</span><span class="metric-icon coral">!</span></div><strong id="lowStockMetric">4</strong><p><b class="alert-text">Needs your attention</b></p></article>
+            </div>
+            <div class="dashboard-grid">
+              <article class="panel sales-panel"><div class="panel-title"><div><h2>Sales overview</h2><p>Revenue this week</p></div><button class="period-select" type="button">This week <span>⌄</span></button></div><div class="chart-wrap"><div class="chart-y"><span>₹40k</span><span>₹30k</span><span>₹20k</span><span>₹10k</span><span>₹0</span></div><div class="bar-chart" aria-label="Weekly sales chart"><div class="grid-line l1"></div><div class="grid-line l2"></div><div class="grid-line l3"></div><div class="grid-line l4"></div><div class="chart-bars"><div class="bar-column"><span class="bar" style="height:42%"></span><small>Mon</small></div><div class="bar-column"><span class="bar" style="height:66%"></span><small>Tue</small></div><div class="bar-column"><span class="bar" style="height:48%"></span><small>Wed</small></div><div class="bar-column"><span class="bar active" style="height:88%"><i>₹35.8k</i></span><small>Thu</small></div><div class="bar-column"><span class="bar" style="height:60%"></span><small>Fri</small></div><div class="bar-column"><span class="bar muted" style="height:24%"></span><small>Sat</small></div><div class="bar-column"><span class="bar muted" style="height:15%"></span><small>Sun</small></div></div></div></div><div class="chart-legend"><span><i class="legend-dot sales-dot"></i>Sales <b>₹ 1,27,800</b></span><span><i class="legend-dot target-dot"></i>Target <b>₹ 1,40,000</b></span></div></article>
+              <article class="panel alerts-panel"><div class="panel-title"><div><h2>Stock alerts</h2><p>Items running low</p></div><button class="text-button" type="button" data-page-jump="inventory">View all</button></div><div id="stockAlerts" class="alert-list"></div></article>
+            </div>
+            <div class="dashboard-grid lower-grid"><article class="panel"><div class="panel-title"><div><h2>Ledger accounts</h2><p>Current balances</p></div><button class="text-button" type="button" data-page-jump="ledger">All accounts</button></div><div id="dashboardLedger" class="ledger-list"></div></article><article class="panel"><div class="panel-title"><div><h2>Recent activity</h2><p>Latest movements</p></div><button class="text-button" type="button" data-page-jump="transactions">View all</button></div><div id="activityList" class="activity-list"></div></article></div>
+          </section>
+
+          <section id="inventoryPage" class="page">
+            <div class="page-heading"><div><p class="eyebrow">CATALOGUE</p><h1>Product inventory</h1><p>Keep a close eye on every item you buy and sell.</p></div><button class="button button-primary admin-only-action" type="button" id="newProductButton">+ Add product</button></div>
+            <div class="inventory-toolbar"><label class="search-field"><span>⌕</span><input id="productSearch" type="search" placeholder="Search products, SKU or category" /></label><select id="stockFilter" aria-label="Filter products by stock"><option value="all">All stock levels</option><option value="low">Low stock</option><option value="available">In stock</option></select><button id="exportProducts" type="button" class="button button-secondary">⇩ Export</button></div>
+            <div class="table-panel"><div class="table-meta"><span><b id="productTableCount">24</b> products</span><span>Stock is updated from each sales and purchase entry</span></div><div class="table-scroll"><table><thead><tr><th>Product</th><th>SKU</th><th>Category</th><th class="number">In stock</th><th class="number">Unit price</th><th>Status</th><th></th></tr></thead><tbody id="productTable"></tbody></table></div></div>
+          </section>
+
+          <section id="transactionsPage" class="page">
+            <div class="page-heading"><div><p class="eyebrow">MOVEMENTS</p><h1>Sales &amp; purchases</h1><p>Record every stock movement and keep your accounts up to date.</p></div></div>
+            <div class="transaction-layout"><article class="entry-card"><div class="entry-tabs"><button class="entry-tab active" type="button" data-entry-type="sale">Record sale</button><button class="entry-tab" type="button" data-entry-type="purchase">Record purchase</button></div><form id="transactionForm"><div class="entry-grid"><label>Product<select id="entryProduct" required></select></label><label>Quantity<input id="entryQuantity" type="number" min="1" value="1" required /></label><label>Unit price (₹)<input id="entryPrice" type="number" min="1" required /></label><label id="accountLabel">Paid into<select id="entryAccount" required></select></label><label>Transaction date<input id="entryDate" type="date" required /></label><label class="full-span">Note <input id="entryNote" type="text" placeholder="Optional reference or note" /></label></div><div id="entryStockHint" class="stock-hint">Choose a product to view available stock.</div><div id="transactionError" class="form-error" role="alert"></div><button class="button button-primary button-full" type="submit"><span id="entrySubmitText">Record sale</span> <span>→</span></button></form></article><aside class="transaction-tip"><span class="tip-spark">✦</span><h3>One entry, everywhere.</h3><p>Every completed entry updates your product quantity and leaves a clear trace in the matching ledger account.</p><div><span>✓</span> Stock quantity updates instantly</div><div><span>✓</span> Ledger balance is refreshed</div><div><span>✓</span> Full transaction history is preserved</div></aside></div>
+            <article class="table-panel transactions-table"><div class="panel-title"><div><h2>Transaction history</h2><p id="transactionCountText">Latest stock movements</p></div><button class="period-select" type="button">All entries <span>⌄</span></button></div><div class="table-scroll"><table><thead><tr><th>Transaction</th><th>Product</th><th>Date</th><th>Account</th><th class="number">Quantity</th><th class="number">Amount</th><th>Status</th></tr></thead><tbody id="transactionTable"></tbody></table></div></article>
+          </section>
+
+          <section id="ledgerPage" class="page">
+            <div class="page-heading"><div><p class="eyebrow">FINANCE</p><h1>Ledger accounts</h1><p>See the balances behind your stock movement.</p></div><button class="button button-primary admin-only-action" type="button" id="newAccountButton">+ New account</button></div>
+            <div id="ledgerCards" class="ledger-card-grid"></div>
+            <article class="table-panel"><div class="panel-title"><div><h2>Account activity</h2><p>Recent postings across all accounts</p></div><button class="button button-secondary" type="button" id="downloadLedger">⇩ Export ledger</button></div><div class="table-scroll"><table><thead><tr><th>Account</th><th>Entry</th><th>Date</th><th>Reference</th><th class="number">Debit</th><th class="number">Credit</th><th class="number">Balance</th></tr></thead><tbody id="ledgerTable"></tbody></table></div></article>
+          </section>
+
+          <section id="settingsPage" class="page">
+            <div class="page-heading"><div><p class="eyebrow">ADMINISTRATION</p><h1>Company settings</h1><p>Manage company access and administrator security.</p></div></div>
+            <div class="settings-layout"><article class="settings-nav"><button type="button" class="setting-nav-item active">Company profile <span>›</span></button><button type="button" class="setting-nav-item active-setting">Security &amp; access <span>›</span></button><button type="button" class="setting-nav-item">Notifications <span>›</span></button><button type="button" class="setting-nav-item">Data export <span>›</span></button></article><div class="settings-content"><article class="panel security-panel"><div><h2>Security &amp; access</h2><p>Update the password used to access the administrator dashboard.</p></div><div class="admin-profile"><span class="avatar admin-avatar">AR</span><div><strong>Swaraj Agro Admin</strong><span>Admin account · Administrator</span></div><span class="verified">✓ Verified</span></div><form id="passwordForm" class="password-form"><label>Current password<input id="currentPassword" type="password" autocomplete="current-password" required /></label><label>New password<input id="newPassword" type="password" autocomplete="new-password" minlength="6" required /></label><label>Confirm new password<input id="confirmPassword" type="password" autocomplete="new-password" minlength="6" required /></label><div id="passwordError" class="form-error full-span" role="alert"></div><div class="settings-actions full-span"><button class="button button-primary" type="submit">Update password</button><span>Use at least 6 characters.</span></div></form></article><article class="panel permissions-panel"><div><h2>Team permissions</h2><p>Staff can record sales and purchases. Administrators can manage products, ledger accounts and access settings.</p></div><div class="permission-row"><span class="avatar staff-avatar">NT</span><span><strong>Swaraj Agro Team</strong><small>Staff account</small></span><span class="permission-badge">Staff · Record entries</span></div></article></div></div>
+          </section>
+        </div>
+      </main>
+    </div>
+
+    <div id="productModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="productModalTitle"><div class="modal"><div class="modal-header"><div><p class="eyebrow">CATALOGUE</p><h2 id="productModalTitle">Add product</h2></div><button class="modal-close" type="button" data-close-modal="productModal" aria-label="Close">×</button></div><form id="productForm"><div class="modal-grid"><label>Product name<input id="newProductName" required placeholder="e.g. Cotton tote bag" /></label><label>SKU<input id="newProductSku" required placeholder="e.g. ACC-025" /></label><label>Category<input id="newProductCategory" required placeholder="e.g. Accessories" /></label><label>Unit price (₹)<input id="newProductPrice" type="number" min="1" required placeholder="0" /></label><label>Opening stock<input id="newProductStock" type="number" min="0" required placeholder="0" /></label><label>Reorder point<input id="newProductReorder" type="number" min="0" required value="10" /></label></div><div id="productError" class="form-error" role="alert"></div><div class="modal-actions"><button class="button button-secondary" type="button" data-close-modal="productModal">Cancel</button><button class="button button-primary" type="submit">Add product</button></div></form></div></div>
+    <div id="accountModal" class="modal-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="accountModalTitle"><div class="modal small-modal"><div class="modal-header"><div><p class="eyebrow">LEDGER</p><h2 id="accountModalTitle">New ledger account</h2></div><button class="modal-close" type="button" data-close-modal="accountModal" aria-label="Close">×</button></div><form id="accountForm"><label>Account name<input id="newAccountName" required placeholder="e.g. Petty cash" /></label><label>Account type<select id="newAccountType"><option>Cash &amp; bank</option><option>Asset</option><option>Expense</option><option>Income</option><option>Liability</option></select></label><label>Opening balance (₹)<input id="newAccountBalance" type="number" value="0" /></label><div id="accountError" class="form-error" role="alert"></div><div class="modal-actions"><button class="button button-secondary" type="button" data-close-modal="accountModal">Cancel</button><button class="button button-primary" type="submit">Create account</button></div></form></div></div>
+    <script src="api.js"></script>
+    <script src="app.js"></script>
+    <script src="permissions.js"></script>
+    <script src="shops.js"></script>
+  </body>
+</html>

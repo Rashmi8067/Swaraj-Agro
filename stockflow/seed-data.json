@@ -1,0 +1,503 @@
+{
+  "seedVersion": 3,
+  "defaultData": {
+    "products": [
+      {
+        "id": 101,
+        "name": "Multi Crop Harvester",
+        "sku": "SAG-FM-001",
+        "category": "Harvesting",
+        "stock": 2,
+        "reorder": 1,
+        "price": 2640000,
+        "emoji": "◈"
+      },
+      {
+        "id": 102,
+        "name": "Multi Crop Thresher",
+        "sku": "SAG-FM-002",
+        "category": "Threshing",
+        "stock": 3,
+        "reorder": 1,
+        "price": 271000,
+        "emoji": "◈"
+      },
+      {
+        "id": 103,
+        "name": "Rotavator",
+        "sku": "SAG-FM-003",
+        "category": "Tillage",
+        "stock": 6,
+        "reorder": 2,
+        "price": 142000,
+        "emoji": "◈"
+      },
+      {
+        "id": 104,
+        "name": "Power Weeder",
+        "sku": "SAG-FM-004",
+        "category": "Tillage & Weeding",
+        "stock": 8,
+        "reorder": 2,
+        "price": 23000,
+        "emoji": "◈"
+      },
+      {
+        "id": 105,
+        "name": "Mini Rice Mill – Annapurna",
+        "sku": "SAG-FM-005",
+        "category": "Rice Processing",
+        "stock": 5,
+        "reorder": 2,
+        "price": 20000,
+        "emoji": "◈"
+      },
+      {
+        "id": 106,
+        "name": "Rubber Sheller – Satya Subhra",
+        "sku": "SAG-FM-006",
+        "category": "Crop Processing",
+        "stock": 4,
+        "reorder": 1,
+        "price": 25000,
+        "emoji": "◈"
+      },
+      {
+        "id": 107,
+        "name": "Petrol PumpSet 2\" – Kisan Kraft",
+        "sku": "SAG-FM-007",
+        "category": "Pumps & Irrigation",
+        "stock": 7,
+        "reorder": 2,
+        "price": 13500,
+        "emoji": "◈"
+      },
+      {
+        "id": 108,
+        "name": "Paddy Thresher – Agreameate",
+        "sku": "SAG-FM-008",
+        "category": "Threshing",
+        "stock": 4,
+        "reorder": 1,
+        "price": 40000,
+        "emoji": "◈"
+      }
+    ],
+    "accounts": [
+      {
+        "id": 1,
+        "name": "SBI Current Account",
+        "type": "Cash & bank",
+        "balance": 245000,
+        "icon": "⌁"
+      },
+      {
+        "id": 2,
+        "name": "Cash in hand",
+        "type": "Cash & bank",
+        "balance": 32500,
+        "icon": "◌"
+      },
+      {
+        "id": 3,
+        "name": "Inventory asset",
+        "type": "Asset",
+        "balance": 7583500,
+        "icon": "□"
+      },
+      {
+        "id": 4,
+        "name": "Sales revenue",
+        "type": "Income",
+        "balance": 185000,
+        "icon": "↗"
+      }
+    ],
+    "transactions": [
+      {
+        "id": 101,
+        "type": "sale",
+        "productId": 101,
+        "product": "Multi Crop Harvester",
+        "qty": 1,
+        "price": 2640000,
+        "account": "SBI Current Account",
+        "date": "2026-09-11",
+        "note": "SO-1001",
+        "time": "10:20 AM"
+      },
+      {
+        "id": 102,
+        "type": "purchase",
+        "productId": 102,
+        "product": "Multi Crop Thresher",
+        "qty": 2,
+        "price": 211380.0,
+        "account": "SBI Current Account",
+        "date": "2026-09-10",
+        "note": "PO-2001",
+        "time": "11:15 AM"
+      },
+      {
+        "id": 103,
+        "type": "sale",
+        "productId": 103,
+        "product": "Rotavator",
+        "qty": 1,
+        "price": 142000,
+        "account": "Cash in hand",
+        "date": "2026-09-09",
+        "note": "Walk-in / Site sale",
+        "time": "02:40 PM"
+      },
+      {
+        "id": 104,
+        "type": "purchase",
+        "productId": 104,
+        "product": "Power Weeder",
+        "qty": 2,
+        "price": 18400.0,
+        "account": "SBI Current Account",
+        "date": "2026-09-08",
+        "note": "PO-2000",
+        "time": "09:35 AM"
+      }
+    ]
+  },
+  "shopSeeds": {
+    "solar": {
+      "name": "Swaraj Agro – Solar Division",
+      "symbol": "S",
+      "description": "Rooftop solar systems & components",
+      "products": [
+        {
+          "id": 201,
+          "name": "Solar PV Module 550W",
+          "sku": "SAG-SL-001",
+          "category": "Solar Modules",
+          "stock": 48,
+          "reorder": 20,
+          "price": 12500,
+          "emoji": "◈"
+        },
+        {
+          "id": 202,
+          "name": "Solar PV Module 575W",
+          "sku": "SAG-SL-002",
+          "category": "Solar Modules",
+          "stock": 36,
+          "reorder": 15,
+          "price": 13800,
+          "emoji": "◈"
+        },
+        {
+          "id": 203,
+          "name": "On-Grid Inverter 3 kW",
+          "sku": "SAG-SL-003",
+          "category": "Inverters",
+          "stock": 6,
+          "reorder": 3,
+          "price": 42000,
+          "emoji": "◈"
+        },
+        {
+          "id": 204,
+          "name": "On-Grid Inverter 5 kW",
+          "sku": "SAG-SL-004",
+          "category": "Inverters",
+          "stock": 5,
+          "reorder": 2,
+          "price": 62000,
+          "emoji": "◈"
+        },
+        {
+          "id": 205,
+          "name": "On-Grid Inverter 10 kW",
+          "sku": "SAG-SL-005",
+          "category": "Inverters",
+          "stock": 3,
+          "reorder": 1,
+          "price": 118000,
+          "emoji": "◈"
+        },
+        {
+          "id": 206,
+          "name": "ACDB – Rooftop Solar",
+          "sku": "SAG-SL-006",
+          "category": "Protection & Distribution",
+          "stock": 10,
+          "reorder": 4,
+          "price": 7800,
+          "emoji": "◈"
+        },
+        {
+          "id": 207,
+          "name": "DCDB – Rooftop Solar",
+          "sku": "SAG-SL-007",
+          "category": "Protection & Distribution",
+          "stock": 10,
+          "reorder": 4,
+          "price": 6900,
+          "emoji": "◈"
+        },
+        {
+          "id": 208,
+          "name": "Solar Mounting Structure Set",
+          "sku": "SAG-SL-008",
+          "category": "Mounting Structures",
+          "stock": 14,
+          "reorder": 5,
+          "price": 18500,
+          "emoji": "◈"
+        }
+      ],
+      "accounts": [
+        {
+          "id": 1,
+          "name": "SBI Current Account – Solar",
+          "type": "Cash & bank",
+          "balance": 318000,
+          "icon": "⌁"
+        },
+        {
+          "id": 2,
+          "name": "UPI / Collections",
+          "type": "Cash & bank",
+          "balance": 68400,
+          "icon": "◌"
+        },
+        {
+          "id": 3,
+          "name": "Solar inventory asset",
+          "type": "Asset",
+          "balance": 2418800,
+          "icon": "□"
+        },
+        {
+          "id": 4,
+          "name": "Solar sales revenue",
+          "type": "Income",
+          "balance": 268000,
+          "icon": "↗"
+        }
+      ],
+      "transactions": [
+        {
+          "id": 201,
+          "type": "sale",
+          "productId": 201,
+          "product": "Solar PV Module 550W",
+          "qty": 1,
+          "price": 12500,
+          "account": "SBI Current Account – Solar",
+          "date": "2026-09-11",
+          "note": "SO-1001",
+          "time": "10:20 AM"
+        },
+        {
+          "id": 202,
+          "type": "purchase",
+          "productId": 202,
+          "product": "Solar PV Module 575W",
+          "qty": 2,
+          "price": 10764.0,
+          "account": "SBI Current Account – Solar",
+          "date": "2026-09-10",
+          "note": "PO-2001",
+          "time": "11:15 AM"
+        },
+        {
+          "id": 203,
+          "type": "sale",
+          "productId": 203,
+          "product": "On-Grid Inverter 3 kW",
+          "qty": 1,
+          "price": 42000,
+          "account": "UPI / Collections",
+          "date": "2026-09-09",
+          "note": "Walk-in / Site sale",
+          "time": "02:40 PM"
+        },
+        {
+          "id": 204,
+          "type": "purchase",
+          "productId": 204,
+          "product": "On-Grid Inverter 5 kW",
+          "qty": 2,
+          "price": 49600.0,
+          "account": "SBI Current Account – Solar",
+          "date": "2026-09-08",
+          "note": "PO-2000",
+          "time": "09:35 AM"
+        }
+      ]
+    },
+    "service": {
+      "name": "Swaraj Agro – Parts & Service",
+      "symbol": "P",
+      "description": "Spare parts, consumables & service stock",
+      "products": [
+        {
+          "id": 301,
+          "name": "Rotavator Blade Set",
+          "sku": "SAG-PS-001",
+          "category": "Spare Parts",
+          "stock": 32,
+          "reorder": 10,
+          "price": 1850,
+          "emoji": "◈"
+        },
+        {
+          "id": 302,
+          "name": "Power Weeder Belt",
+          "sku": "SAG-PS-002",
+          "category": "Spare Parts",
+          "stock": 24,
+          "reorder": 8,
+          "price": 650,
+          "emoji": "◈"
+        },
+        {
+          "id": 303,
+          "name": "Thresher Bearing Set",
+          "sku": "SAG-PS-003",
+          "category": "Spare Parts",
+          "stock": 18,
+          "reorder": 6,
+          "price": 1450,
+          "emoji": "◈"
+        },
+        {
+          "id": 304,
+          "name": "PumpSet Recoil Starter",
+          "sku": "SAG-PS-004",
+          "category": "Spare Parts",
+          "stock": 12,
+          "reorder": 5,
+          "price": 980,
+          "emoji": "◈"
+        },
+        {
+          "id": 305,
+          "name": "Petrol PumpSet Hose 2\"",
+          "sku": "SAG-PS-005",
+          "category": "Irrigation Spares",
+          "stock": 28,
+          "reorder": 10,
+          "price": 750,
+          "emoji": "◈"
+        },
+        {
+          "id": 306,
+          "name": "Sprayer Nozzle Set",
+          "sku": "SAG-PS-006",
+          "category": "Sprayer Spares",
+          "stock": 40,
+          "reorder": 15,
+          "price": 420,
+          "emoji": "◈"
+        },
+        {
+          "id": 307,
+          "name": "Agricultural Engine Oil 1L",
+          "sku": "SAG-PS-007",
+          "category": "Consumables",
+          "stock": 35,
+          "reorder": 12,
+          "price": 520,
+          "emoji": "◈"
+        },
+        {
+          "id": 308,
+          "name": "Fastener & Fitting Kit",
+          "sku": "SAG-PS-008",
+          "category": "Consumables",
+          "stock": 20,
+          "reorder": 8,
+          "price": 860,
+          "emoji": "◈"
+        }
+      ],
+      "accounts": [
+        {
+          "id": 1,
+          "name": "Parts & Service Current Account",
+          "type": "Cash & bank",
+          "balance": 142000,
+          "icon": "⌁"
+        },
+        {
+          "id": 2,
+          "name": "Service Cash",
+          "type": "Cash & bank",
+          "balance": 18400,
+          "icon": "◌"
+        },
+        {
+          "id": 3,
+          "name": "Parts inventory asset",
+          "type": "Asset",
+          "balance": 185860,
+          "icon": "□"
+        },
+        {
+          "id": 4,
+          "name": "Service revenue",
+          "type": "Income",
+          "balance": 92400,
+          "icon": "↗"
+        }
+      ],
+      "transactions": [
+        {
+          "id": 301,
+          "type": "sale",
+          "productId": 301,
+          "product": "Rotavator Blade Set",
+          "qty": 1,
+          "price": 1850,
+          "account": "Parts & Service Current Account",
+          "date": "2026-09-11",
+          "note": "SO-1001",
+          "time": "10:20 AM"
+        },
+        {
+          "id": 302,
+          "type": "purchase",
+          "productId": 302,
+          "product": "Power Weeder Belt",
+          "qty": 2,
+          "price": 507.0,
+          "account": "Parts & Service Current Account",
+          "date": "2026-09-10",
+          "note": "PO-2001",
+          "time": "11:15 AM"
+        },
+        {
+          "id": 303,
+          "type": "sale",
+          "productId": 303,
+          "product": "Thresher Bearing Set",
+          "qty": 1,
+          "price": 1450,
+          "account": "Service Cash",
+          "date": "2026-09-09",
+          "note": "Walk-in / Site sale",
+          "time": "02:40 PM"
+        },
+        {
+          "id": 304,
+          "type": "purchase",
+          "productId": 304,
+          "product": "PumpSet Recoil Starter",
+          "qty": 2,
+          "price": 784.0,
+          "account": "Parts & Service Current Account",
+          "date": "2026-09-08",
+          "note": "PO-2000",
+          "time": "09:35 AM"
+        }
+      ]
+    }
+  }
+}

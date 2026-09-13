@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: stockflow
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: MONGODB_URI
+        sync: false
+      - key: MONGODB_DB
+        value: stockflow
+      - key: JWT_SECRET
+        generateValue: true
+      - key: INITIAL_ADMIN_EMAIL
+        sync: false
+      - key: INITIAL_ADMIN_PASSWORD
+        sync: false
+      - key: INITIAL_STAFF_EMAIL
+        sync: false
+      - key: INITIAL_STAFF_PASSWORD
+        sync: false
+      - key: INITIAL_WAREHOUSE_EMAIL
+        sync: false
+      - key: INITIAL_WAREHOUSE_PASSWORD
+        sync: false
+      - key: CLOUDINARY_CLOUD_NAME
+        sync: false
+      - key: CLOUDINARY_API_KEY
+        sync: false
+      - key: CLOUDINARY_API_SECRET
+        sync: false
+      - key: CLOUDINARY_FOLDER
+        value: stockflow
