@@ -10,10 +10,8 @@ const nodemailer=require('nodemailer');
 const store=require('./lib/store');
 const auth=require('./lib/auth');
 const { syncVendor } = require('./lib/pm-surya-sync');
-const sfSeed = require('./stockflow/seed-data.json');
-const jwt = require('jsonwebtoken');
 
-const REQUIRED_ENV=['MONGODB_URI','JWT_SECRET','INITIAL_ADMIN_PASSWORD','INITIAL_STAFF_PASSWORD','INITIAL_WAREHOUSE_PASSWORD'];
+const REQUIRED_ENV=['ADMIN_PASSWORD','RESET_EMAIL','SESSION_SECRET'];
 const missingEnv=REQUIRED_ENV.filter(k=>!process.env[k]);
 if(missingEnv.length){
   console.error(`\nMissing required environment variable(s): ${missingEnv.join(', ')}.\nCopy .env.example to .env (locally) or set them in your host's environment settings, then restart.\n`);
@@ -22,7 +20,6 @@ if(missingEnv.length){
 
 const app=express();
 const PORT=process.env.PORT||3000;
-const SESSION_SECRET=process.env.SESSION_SECRET||process.env.JWT_SECRET;
 const uploadsDir=path.join(__dirname,'public','uploads');
 fs.mkdirSync(uploadsDir,{recursive:true});
 app.set('view engine','ejs'); app.set('views',path.join(__dirname,'views'));
@@ -30,14 +27,7 @@ app.use(express.urlencoded({extended:true,limit:'2mb'}));
 app.use(express.json({limit:'2mb'}));
 app.use(express.static(path.join(__dirname,'public')));
 app.use('/uploads', express.static(uploadsDir));
-app.use(session({secret:SESSION_SECRET,resave:false,saveUninitialized:false,cookie:{httpOnly:true,sameSite:'lax',secure:process.env.NODE_ENV==='production',maxAge:1000*60*30}}));
-
-// ----- StockFlow inventory application -----
-const STOCKFLOW_DIR = path.join(__dirname, 'stockflow');
-app.get('/stockflow', (req,res) => res.redirect('/stockflow/'));
-app.use('/stockflow', express.static(STOCKFLOW_DIR, { index: 'index.html', fallthrough: true }));
-
-
+app.use(session({secret:process.env.SESSION_SECRET,resave:false,saveUninitialized:false,cookie:{httpOnly:true,sameSite:'lax',secure:false,maxAge:1000*60*30}}));
 
 // Image storage: uses Cloudinary when configured (survives redeploys on hosts
 // with an ephemeral filesystem), otherwise falls back to local disk for local dev.
@@ -60,7 +50,7 @@ async function storeUpload(file){
   if(!file) return null;
   if(useCloudinary){
     const result=await new Promise((resolve,reject)=>{
-      const uploadStream=cloudinary.uploader.upload_stream({folder:'swaraj-agro',resource_type:'image'},(err,res)=>err?reject(err):resolve(res));
+      const uploadStream=cloudinary.uploader.upload_stream({folder:'ds-swaraj-agro',resource_type:'image'},(err,res)=>err?reject(err):resolve(res));
       stream.Readable.from(file.buffer).pipe(uploadStream);
     });
     return result.secure_url;
@@ -134,11 +124,6 @@ app.post('/admin/login',async(req,res)=>{ try{
   const ok=await auth.verify(req.body.password||'');
   if(!ok) return res.render('login',{error:'Invalid admin password.',resetEmail:await auth.getResetEmail(),rememberMe:false});
   req.session.admin=true;
-  try {
-    const sfAdmin = await stockflowDb.collection('users').findOne({ isAdmin: true, userId: 'admin' });
-    const publicAdmin = await auth.ensureAdmin();
-    if (sfAdmin && publicAdmin?.passwordHash) await stockflowDb.collection('users').updateOne({ _id: sfAdmin._id }, { $set: { passwordHash: publicAdmin.passwordHash, updatedAt: new Date() } });
-  } catch (syncError) { console.error('[StockFlow] admin password sync on login failed:', syncError.message); }
   const remember=String(req.body.rememberMe||'')==='on';
   req.session.cookie.maxAge=remember?(1000*60*60*24*30):(1000*60*30);
   res.redirect('/admin');
@@ -163,25 +148,12 @@ app.post('/admin/reset/verify',async(req,res)=>{
   if(!rec || rec.expires<Date.now() || rec.otp!==otp) return res.render('reset',{email,message:'Invalid or expired OTP.'});
   const newPassword=String(req.body.newPassword||'');
   if(newPassword.length<8) return res.render('reset',{email,message:'New password must be at least 8 characters.'});
-  await auth.changePassword(newPassword);
-  try { await stockflowDb.collection('users').updateOne({ isAdmin: true, userId: 'admin' }, { $set: { passwordHash: require('bcryptjs').hashSync(newPassword, 12), updatedAt: new Date() } }); } catch (syncError) { console.error('[StockFlow] admin password sync after reset failed:', syncError.message); }
-  delete otpStore[email];
+  await auth.changePassword(newPassword); delete otpStore[email];
   return res.render('login',{error:null,resetEmail:await auth.getResetEmail(),success:'Password reset successfully. You can now log in.'});
 });
 
 
 app.post('/admin/enquiries/delete',adminOnly,async(req,res)=>{ try{ await store.update(d=>{ d.enquiries=(d.enquiries||[]).filter(e=>e.id!==req.body.id); }); setFlash(req,'success','Enquiry deleted.'); }catch(e){setFlash(req,'error','Could not delete enquiry.');} res.redirect('/admin#enquiries'); });
-
-app.get('/admin/stockflow-token', adminOnly, async (req, res) => {
-  try {
-    const user = await stockflowDb.collection('users').findOne({ isAdmin: true, userId: 'admin' });
-    if (!user) return res.status(503).json({ error: 'StockFlow administrator account is not initialized.' });
-    res.json({ token: signToken(user) });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Unable to open StockFlow admin.' });
-  }
-});
 
 app.get('/admin',adminOnly,async(req,res,next)=>{ try{
   const site=await store.read(); const flash=req.session.flash; delete req.session.flash;
@@ -288,311 +260,8 @@ async function refreshSolarVendor(){
   } catch(e) { console.error('[PM Surya Ghar] sync error:',e.message); }
 }
 
-
-
-let stockflowDb;
-
-function clone(value) { return JSON.parse(JSON.stringify(value)); }
-function normalizeWorkspace(workspace) {
-  const result = clone(workspace);
-  delete result.passwords;
-  delete result.staffUsers;
-  result.activeShop = result.activeShop || 'greenfield';
-  return result;
-}
-
-function buildSeedWorkspace() {
-  const main = clone(sfSeed.defaultData);
-  const shops = {
-    greenfield: {
-      name: 'Greenfield Goods', symbol: 'G', description: 'Pantry & lifestyle',
-      products: clone(main.products), accounts: clone(main.accounts), transactions: clone(main.transactions)
-    },
-    mitti: clone(sfSeed.shopSeeds.mitti),
-    roastline: clone(sfSeed.shopSeeds.roastline)
-  };
-  for (const shop of Object.values(shops)) {
-    const inv = shop.accounts.find(a => a.type === 'Asset' || a.name.toLowerCase().includes('inventory'));
-    if (inv) inv.balance = shop.products.reduce((sum, p) => sum + Number(p.stock || 0) * Number(p.price || 0), 0);
-  }
-  return normalizeWorkspace({ shops, activeShop: 'greenfield' });
-}
-
-async function ensureWorkspace() {
-  const collection = stockflowDb.collection('workspaces');
-  let workspace = await collection.findOne({ key: 'default' });
-  if (!workspace) {
-    const now = new Date();
-    workspace = { key: 'default', ...buildSeedWorkspace(), createdAt: now, updatedAt: now };
-    await collection.insertOne(workspace);
-  }
-  return workspace;
-}
-
-async function ensureUser(email, password, profile) {
-  const users = stockflowDb.collection('users');
-  const existing = await users.findOne({ email: email.toLowerCase() });
-  if (existing) return existing;
-  const passwordHash = await bcrypt.hash(password, 12);
-  const now = new Date();
-  const user = {
-    ...profile,
-    email: email.toLowerCase(),
-    passwordHash,
-    createdAt: now,
-    updatedAt: now
-  };
-  await users.insertOne(user);
-  return user;
-}
-
-async function ensureUsers() {
-  const adminPassword = process.env.INITIAL_ADMIN_PASSWORD;
-  const staffPassword = process.env.INITIAL_STAFF_PASSWORD;
-  const warehousePassword = process.env.INITIAL_WAREHOUSE_PASSWORD;
-  if (!adminPassword || !staffPassword || !warehousePassword) {
-    console.error('Missing INITIAL_ADMIN_PASSWORD, INITIAL_STAFF_PASSWORD, or INITIAL_WAREHOUSE_PASSWORD.');
-    process.exit(1);
-  }
-  await ensureUser(process.env.INITIAL_ADMIN_EMAIL || 'admin@ledgerly.demo', adminPassword, {
-    userId: 'admin', name: 'Aarav Rao', initials: 'AR', role: 'Administrator', isAdmin: true,
-    permissions: { viewAmounts: true, recordSales: true, recordPurchases: true }
-  });
-  await ensureUser(process.env.INITIAL_STAFF_EMAIL || 'staff@ledgerly.demo', staffPassword, {
-    userId: 'staff', name: 'Neha Thakur', initials: 'NT', role: 'Sales associate', isAdmin: false,
-    permissions: { viewAmounts: true, recordSales: true, recordPurchases: true }
-  });
-  await ensureUser(process.env.INITIAL_WAREHOUSE_EMAIL || 'warehouse@ledgerly.demo', warehousePassword, {
-    userId: 'warehouse', name: 'Kabir Singh', initials: 'KS', role: 'Warehouse associate', isAdmin: false,
-    permissions: { viewAmounts: false, recordSales: false, recordPurchases: true }
-  });
-}
-
-function publicUser(user) {
-  return {
-    id: user.userId,
-    userId: user.userId,
-    name: user.name,
-    initials: user.initials,
-    email: user.email,
-    loginId: user.loginId || user.email,
-    role: user.role,
-    isAdmin: Boolean(user.isAdmin),
-    permissions: user.permissions || { viewAmounts: false, recordSales: false, recordPurchases: false }
-  };
-}
-
-function signToken(user) {
-  return jwt.sign({ sub: user._id.toString(), userId: user.userId, isAdmin: Boolean(user.isAdmin) }, JWT_SECRET, { expiresIn: '7d' });
-}
-
-async function sfAuth(req, res, next) {
-  try {
-    const header = req.headers.authorization || '';
-    const token = header.startsWith('Bearer ') ? header.slice(7) : null;
-    if (!token) return res.status(401).json({ error: 'Authentication required.' });
-    const payload = jwt.verify(token, JWT_SECRET);
-    const user = await stockflowDb.collection('users').findOne({ _id: new ObjectId(payload.sub) });
-    if (!user) return res.status(401).json({ error: 'User account not found.' });
-    req.user = user;
-    next();
-  } catch (error) {
-    return res.status(401).json({ error: 'Your session has expired. Please sign in again.' });
-  }
-}
-
-function sfRequireAdmin(req, res, next) {
-  if (!req.user?.isAdmin) return res.status(403).json({ error: 'Administrator access required.' });
-  next();
-}
-
-async function getWorkspace() {
-  const workspace = await stockflowDb.collection('workspaces').findOne({ key: 'default' });
-  if (!workspace) throw new Error('Workspace not initialized.');
-  return normalizeWorkspace(workspace);
-}
-
-async function saveWorkspace(nextWorkspace) {
-  const sanitized = normalizeWorkspace(nextWorkspace);
-  sanitized.updatedAt = new Date();
-  await stockflowDb.collection('workspaces').updateOne({ key: 'default' }, { $set: sanitized });
-  return sanitized;
-}
-
-function activeShopState(workspace, shopId) {
-  const shop = workspace.shops?.[shopId];
-  if (!shop) throw new Error('Shop not found.');
-  return shop;
-}
-
-
-app.get('/api/health', async (req, res) => {
-  try {
-    await stockflowDb.command({ ping: 1 });
-    res.json({ ok: true, service: 'stockflow' });
-  } catch {
-    res.status(503).json({ ok: false });
-  }
-});
-
-app.post('/api/auth/login', async (req, res) => {
-  try {
-    const email = String(req.body.email || '').trim().toLowerCase();
-    const password = String(req.body.password || '');
-    const user = await stockflowDb.collection('users').findOne({ email });
-    if (!user || !(await bcrypt.compare(password, user.passwordHash))) return res.status(401).json({ error: 'That email or password does not match this workspace.' });
-    const workspace = await getWorkspace();
-    const staffUsers = {};
-    const users = await stockflowDb.collection('users').find({}).project({ passwordHash: 0 }).toArray();
-    for (const item of users) if (!item.isAdmin) staffUsers[item.userId] = publicUser(item);
-    workspace.staffUsers = staffUsers;
-    res.json({ token: signToken(user), user: publicUser(user), workspace });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Unable to sign in right now.' });
-  }
-});
-
-app.get('/api/bootstrap', sfAuth, async (req, res) => {
-  const workspace = await getWorkspace();
-  const users = await stockflowDb.collection('users').find({}).project({ passwordHash: 0 }).toArray();
-  const staffUsers = {};
-  for (const item of users) if (!item.isAdmin) staffUsers[item.userId] = publicUser(item);
-  workspace.staffUsers = staffUsers;
-  res.json({ user: publicUser(req.user), workspace });
-});
-
-app.put('/api/workspace', sfAuth, sfRequireAdmin, async (req, res) => {
-  try {
-    const candidate = normalizeWorkspace(req.body);
-    if (!candidate.shops || typeof candidate.shops !== 'object') return res.status(400).json({ error: 'Invalid workspace payload.' });
-    const workspace = await saveWorkspace(candidate);
-    res.json({ workspace });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Unable to save the workspace.' });
-  }
-});
-
-app.post('/api/transactions', sfAuth, async (req, res) => {
-  try {
-    const { shopId = 'greenfield', type, productId, qty, price, accountName, date, note } = req.body;
-    if (!['sale', 'purchase'].includes(type)) return res.status(400).json({ error: 'Invalid transaction type.' });
-    const quantity = Number(qty); const unitPrice = Number(price);
-    if (!Number.isInteger(quantity) || quantity < 1 || !Number.isFinite(unitPrice) || unitPrice < 1) return res.status(400).json({ error: 'Invalid quantity or price.' });
-    const permission = type === 'sale' ? 'recordSales' : 'recordPurchases';
-    if (!req.user.isAdmin && !req.user.permissions?.[permission]) return res.status(403).json({ error: `You do not have permission to record ${type === 'sale' ? 'sales' : 'purchases'}.` });
-    const workspace = await getWorkspace();
-    const shop = activeShopState(workspace, shopId);
-    const product = shop.products.find(p => Number(p.id) === Number(productId));
-    const account = shop.accounts.find(a => a.name === accountName);
-    if (!product || !account) return res.status(404).json({ error: 'Product or account not found.' });
-    if (type === 'sale' && quantity > Number(product.stock)) return res.status(400).json({ error: `Only ${product.stock} units of ${product.name} are available.` });
-    product.stock += type === 'sale' ? -quantity : quantity;
-    const total = quantity * unitPrice;
-    account.balance += type === 'sale' ? total : -total;
-    shop.transactions.unshift({ id: Date.now(), type, productId: product.id, product: product.name, qty: quantity, price: unitPrice, account: account.name, date: date || new Date().toISOString().slice(0,10), note: String(note || '').trim() || (type === 'sale' ? 'New sale' : 'New purchase'), time: new Date().toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' }) });
-    const inv = shop.accounts.find(a => a.type === 'Asset' || a.name.toLowerCase().includes('inventory'));
-    if (inv) inv.balance = shop.products.reduce((sum, p) => sum + Number(p.stock || 0) * Number(p.price || 0), 0);
-    workspace.updatedAt = new Date();
-    await saveWorkspace(workspace);
-    res.json({ workspace, transaction: shop.transactions[0] });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Unable to record that transaction.' });
-  }
-});
-
-app.get('/api/users', sfAuth, sfRequireAdmin, async (req, res) => {
-  const users = await stockflowDb.collection('users').find({ isAdmin: false }).project({ passwordHash: 0 }).toArray();
-  res.json({ users: users.map(publicUser) });
-});
-
-app.post('/api/users', sfAuth, sfRequireAdmin, async (req, res) => {
-  try {
-    const { userId, name, role, email, password, permissions } = req.body;
-    const loginId = String(email || '').trim().toLowerCase();
-    if (!name || !role || !loginId || !password || String(password).length < 6) return res.status(400).json({ error: 'Complete the details and use a password of at least 6 characters.' });
-    if (await stockflowDb.collection('users').findOne({ email: loginId })) return res.status(409).json({ error: 'That access ID is already in use.' });
-    const safeId = userId || `staff-${crypto.randomUUID()}`;
-    const user = await ensureUser(loginId, password, { userId: safeId, name, initials: name.split(/\s+/).map(p => p[0]).join('').slice(0,2).toUpperCase(), role, isAdmin: false, permissions: permissions || {} });
-    res.status(201).json({ user: publicUser(user) });
-  } catch (error) { console.error(error); res.status(500).json({ error: 'Unable to create staff access.' }); }
-});
-
-app.patch('/api/users/:userId', sfAuth, sfRequireAdmin, async (req, res) => {
-  try {
-    const allowed = {}; const { name, role, email, permissions, password } = req.body;
-    if (name !== undefined) allowed.name = String(name).trim();
-    if (role !== undefined) allowed.role = String(role).trim();
-    if (email !== undefined) allowed.email = String(email).trim().toLowerCase();
-    if (permissions !== undefined) allowed.permissions = permissions;
-    if (password) allowed.passwordHash = await bcrypt.hash(String(password), 12);
-    allowed.updatedAt = new Date();
-    const query = { userId: req.params.userId, isAdmin: false };
-    if (allowed.email && await stockflowDb.collection('users').findOne({ email: allowed.email, userId: { $ne: req.params.userId } })) return res.status(409).json({ error: 'That access ID is already in use.' });
-    const result = await stockflowDb.collection('users').findOneAndUpdate(query, { $set: allowed }, { returnDocument: 'after', projection: { passwordHash: 0 } });
-    const updated = result?.value ?? result;
-    if (!updated) return res.status(404).json({ error: 'Staff account not found.' });
-    if (allowed.name) { updated.initials = allowed.name.split(/\s+/).map(p => p[0]).join('').slice(0,2).toUpperCase(); await stockflowDb.collection('users').updateOne(query, { $set: { initials: updated.initials } }); }
-    res.json({ user: publicUser(updated) });
-  } catch (error) { console.error(error); res.status(500).json({ error: 'Unable to update staff access.' }); }
-});
-
-app.post('/api/me/password', sfAuth, async (req, res) => {
-  try {
-    const current = String(req.body.currentPassword || '');
-    const next = String(req.body.newPassword || '');
-    if (next.length < 6) return res.status(400).json({ error: 'Use a new password with at least 6 characters.' });
-    if (!(await bcrypt.compare(current, req.user.passwordHash))) return res.status(400).json({ error: 'Your current password is not correct.' });
-    const passwordHash = await bcrypt.hash(next, 12);
-    await stockflowDb.collection('users').updateOne({ _id: req.user._id }, { $set: { passwordHash, updatedAt: new Date() } });
-    if (req.user.isAdmin) await stockflowDb.collection('admin').updateOne({ _id: 'main' }, { $set: { passwordHash, updatedAt: new Date() } });
-    res.json({ ok: true });
-  } catch (error) { console.error(error); res.status(500).json({ error: 'Unable to update your password.' }); }
-});
-
-app.post('/api/reset-demo', sfAuth, sfRequireAdmin, async (req, res) => {
-  const workspace = buildSeedWorkspace();
-  await saveWorkspace(workspace);
-  res.json({ workspace });
-});
-
-app.post('/api/cloudinary/signature', sfAuth, sfRequireAdmin, async (req, res) => {
-  if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) return res.status(503).json({ error: 'Cloudinary is not configured.' });
-  const timestamp = Math.round(Date.now() / 1000);
-  const folder = process.env.CLOUDINARY_FOLDER || 'stockflow';
-  const signature = cloudinary.utils.api_sign_request({ timestamp, folder }, process.env.CLOUDINARY_API_SECRET);
-  res.json({ timestamp, folder, signature, cloudName: process.env.CLOUDINARY_CLOUD_NAME, apiKey: process.env.CLOUDINARY_API_KEY });
-});
-
-app.post('/api/cloudinary/upload', sfAuth, sfRequireAdmin, upload.single('file'), async (req, res) => {
-  try {
-    if (!process.env.CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) return res.status(503).json({ error: 'Cloudinary is not configured.' });
-    if (!req.file) return res.status(400).json({ error: 'No file provided.' });
-    const folder = process.env.CLOUDINARY_FOLDER || 'stockflow';
-    const result = await new Promise((resolve, reject) => {
-      const stream = cloudinary.uploader.upload_stream({ folder, resource_type: 'auto' }, (error, uploaded) => error ? reject(error) : resolve(uploaded));
-      stream.end(req.file.buffer);
-    });
-    res.json({ url: result.secure_url, publicId: result.public_id });
-  } catch (error) { console.error(error); res.status(500).json({ error: 'Cloudinary upload failed.' }); }
-});
-
-
-
 async function main(){
-  const { getDb } = require('./lib/db');
-  stockflowDb = await getDb();
-  if (!stockflowDb) throw new Error('MONGODB_URI is required for the merged StockFlow application.');
-  // Initialize StockFlow collections in the same MongoDB database used by the public website.
-  await ensureWorkspace();
-  await ensureUsers();
   await auth.ensureAdmin();
-  app.listen(PORT,'0.0.0.0',()=>{ 
-    console.log(`Swaraj Agro + StockFlow running on port ${PORT}`);
-    setTimeout(refreshSolarVendor,5000);
-    setInterval(refreshSolarVendor,6*60*60*1000);
-  });
+  app.listen(PORT,()=>{ console.log(`DS Swaraj Agro website running at http://localhost:${PORT}`); setTimeout(refreshSolarVendor,5000); setInterval(refreshSolarVendor,6*60*60*1000); });
 }
 main().catch(err=>{ console.error('Failed to start server:',err.message); process.exit(1); });
