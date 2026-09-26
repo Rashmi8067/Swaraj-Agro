@@ -3,7 +3,7 @@ const S = {
   companies: [],
   companyId: localStorage.getItem('companyId') || '',
   data: { summary: {}, products: [], parties: [], documents: [], payments: [], expenses: [], accounts: [], entries: [] },
-  theme: localStorage.getItem('theme') || 'dark',
+  theme: localStorage.getItem('swarajTheme') || localStorage.getItem('theme') || 'dark',
   menuPinned: localStorage.getItem('menuPinned') === '1',
   menuOpen: false,
   menuTimer: null,
@@ -33,10 +33,13 @@ function cVal(c, a, b, d = '') { return c?.[a] ?? c?.[b] ?? d; }
 function setTheme() {
   document.documentElement.dataset.theme = S.theme;
   localStorage.setItem('theme', S.theme);
+  localStorage.setItem('swarajTheme', S.theme);
+  localStorage.setItem('swarajSiteTheme', S.theme);
   const button = $('#themeToggle');
   if (button) button.innerHTML = S.theme === 'dark' ? '☀' : '◐';
 }
 function toggleTheme() { S.theme = S.theme === 'dark' ? 'light' : 'dark'; setTheme(); render(); }
+window.addEventListener('storage', e => { if (e.key === 'swarajTheme' && e.newValue && e.newValue !== S.theme) { S.theme = e.newValue; setTheme(); render(); } });
 function go(hash) { if (location.hash === hash) render(); else location.hash = hash; }
 function currentHash() { return location.hash || '#/dashboard'; }
 function parts() { return currentHash().replace(/^#\//, '').split('/').filter(Boolean); }
@@ -157,7 +160,7 @@ function render() {
             <span class="fy-pill">FY ${fyLabel()}</span>
             <button id="themeToggle" class="circle-button" title="Switch theme">${S.theme === 'dark' ? '☀' : '◐'}</button>
             ${S.user?.isAdmin ? `<a class="top-admin" href="/admin">Website Admin</a>` : ''}
-            <button id="profileButton" class="user-chip"><span class="avatar">${esc((S.user?.name || 'A').slice(0,1).toUpperCase())}</span><span class="user-copy"><b>${esc(S.user?.name || 'User')}</b><small>${esc(S.user?.role || 'Staff')}</small></span></button>
+
           </div>
         </header>
         <section id="page"></section>
@@ -175,23 +178,14 @@ function bindChrome() {
   $('#topCompanySelect').onchange = e => changeCompany(e.target.value);
   $('#logout').onclick = () => { localStorage.removeItem('companyId'); if(S.siteSession) location.href='/admin/logout'; else { localStorage.removeItem('token'); location.reload(); } };
   $('#themeToggle').onclick = toggleTheme;
-  $('#topMenu').onclick = toggleMenuPin;
-  $('#pinMenu').onclick = toggleMenuPin;
-  $('#navEdge').onmouseenter = openMenu;
-  $('#verticalNav').onmouseenter = () => { clearTimeout(S.menuTimer); if (!S.menuPinned) { S.menuOpen = true; setMenuState(); } };
-  $('#verticalNav').onmouseleave = scheduleMenuClose;
-  if (!S.edgeWatcherBound) { document.addEventListener('mousemove', mouseEdgeWatcher, { passive: true }); S.edgeWatcherBound = true; }
-  $('#profileButton').onclick = showProfileMenu;
-  $$('.vtab,[data-href]').forEach(a => a.onclick = e => { const href = a.dataset.href || a.getAttribute('href'); if (href) { e.preventDefault(); go(href); scheduleMenuClose(); } });
+  $('#topMenu').onclick = () => { S.menuOpen = !S.menuOpen; setMenuState(); };
+  $('#pinMenu').onclick = () => { S.menuOpen = !S.menuOpen; setMenuState(); };
+  $$('.vtab,[data-href]').forEach(a => a.onclick = e => { const href = a.dataset.href || a.getAttribute('href'); if (href) { e.preventDefault(); go(href); } });
 }
-function mouseEdgeWatcher(e) {
-  if (window.innerWidth <= 900 || S.menuPinned) return;
-  if (e.clientX <= 9) openMenu();
-  if (e.clientX > 310 && S.menuOpen) scheduleMenuClose();
-}
-function openMenu() { clearTimeout(S.menuTimer); S.menuOpen = true; setMenuState(); }
-function scheduleMenuClose() { if (S.menuPinned || window.innerWidth <= 900) return; clearTimeout(S.menuTimer); S.menuTimer = setTimeout(() => { S.menuOpen = false; setMenuState(); }, 450); }
-function toggleMenuPin() { S.menuPinned = !S.menuPinned; localStorage.menuPinned = S.menuPinned ? '1' : '0'; S.menuOpen = S.menuPinned; setMenuState(); }
+function mouseEdgeWatcher(e) {}
+function openMenu() { S.menuOpen = true; setMenuState(); }
+function scheduleMenuClose() {}
+function toggleMenuPin() { S.menuOpen = !S.menuOpen; setMenuState(); }
 function setMenuState() { $('#verticalNav')?.classList.toggle('pinned', S.menuPinned); $('#verticalNav')?.classList.toggle('open', S.menuOpen || S.menuPinned); const p = $('#pinMenu'); if (p) { p.classList.toggle('on', S.menuPinned); p.textContent = S.menuPinned ? '◀' : '▶'; } }
 function showProfileMenu() {
   const old = $('.floating-menu'); if (old) old.remove();
@@ -221,8 +215,12 @@ function routeRender() {
   let html = '';
   if (p[0] === 'dashboard' || !p[0]) html = dashboardPage();
   else if (p[0] === 'billing' && !p[1]) html = billingHomePage();
-  else if (p[0] === 'billing' && p[1]) html = documentPage(docTypeFromRoute());
-  else if (p[0] === 'purchases' && p[1] === 'purchase-bill') html = documentPage('purchase');
+  else if (p[0] === 'billing' && p[1] && p[2] === 'new') html = documentPage(docTypeFromRoute());
+  else if (p[0] === 'billing' && p[1] && p[2] === 'all') html = documentAllPage(docTypeFromRoute());
+  else if (p[0] === 'billing' && p[1]) html = documentChoicePage(docTypeFromRoute());
+  else if (p[0] === 'purchases' && p[1] === 'purchase-bill' && p[2] === 'new') html = documentPage('purchase');
+  else if (p[0] === 'purchases' && p[1] === 'purchase-bill' && p[2] === 'all') html = documentAllPage('purchase');
+  else if (p[0] === 'purchases' && p[1] === 'purchase-bill') html = documentChoicePage('purchase');
   else if (p[0] === 'purchases') html = purchasePage();
   else if (p[0] === 'inventory' && p[1] === 'new') html = itemFormPage();
   else if (p[0] === 'inventory' && p[1] === 'edit') html = itemFormPage(p[2]);
@@ -289,6 +287,30 @@ function billingHomePage() {
 function billingCard(type, title, href, text, badgeText, tone, icon) { return `<a class="billing-card ${tone}" href="${href}"><div class="billing-icon">${icon}</div><div class="billing-copy"><span>${badgeText}</span><h3>${esc(title)}</h3><p>${esc(text)}</p></div><strong>→</strong></a>`; }
 function billingRegisterRows(docs) {
   return `<div class="table-scroll"><table><thead><tr><th>Number</th><th>Date</th><th>Type</th><th>Party</th><th>Total</th><th>Status</th><th></th></tr></thead><tbody>${docs.map(d=>`<tr data-text="${esc(`${d.number} ${d.partyName || ''} ${d.type}`.toLowerCase())}" data-type="${esc(d.type)}"><td><b>${esc(d.number)}</b></td><td>${esc(d.date)}</td><td>${docBadge(d.type)}</td><td>${esc(d.partyName || 'Walk-in')}</td><td>${money(d.total)}</td><td>${statusBadge(d.status)}</td><td><button class="mini" data-download-pdf="${d.id}">PDF</button>${d.status !== 'cancelled' ? `<button class="mini danger" data-cancel-doc="${d.id}">Cancel</button>` : ''}</td></tr>`).join('')}</tbody></table></div>`;
+}
+
+function documentMeta(type) {
+  return {
+    invoice:{title:'GST Tax Invoice',badge:'GST',tone:'blue',desc:'Issue a tax invoice with HSN, GST and stock posting.',filter:'invoice',newRoute:'#/billing/gst-invoice/new',allRoute:'#/billing/gst-invoice/all'},
+    non_gst:{title:'Non-GST Cash Bill',badge:'CASH',tone:'orange',desc:'Fast cash or retail billing without tax components.',filter:'non_gst',newRoute:'#/billing/non-gst/new',allRoute:'#/billing/non-gst/all'},
+    quotation:{title:'Quotation',badge:'QUOTE',tone:'purple',desc:'Price offer with no stock or ledger posting.',filter:'quotation',newRoute:'#/billing/quotation/new',allRoute:'#/billing/quotation/all'},
+    proforma:{title:'Proforma Invoice',badge:'PI',tone:'cyan',desc:'Pre-sale document for advance requests and approvals.',filter:'proforma',newRoute:'#/billing/proforma/new',allRoute:'#/billing/proforma/all'},
+    delivery_challan:{title:'Delivery Challan',badge:'DC',tone:'green',desc:'Dispatch document without sales posting.',filter:'delivery_challan',newRoute:'#/billing/delivery-challan/new',allRoute:'#/billing/delivery-challan/all'},
+    purchase:{title:'Purchase Bill',badge:'PUR',tone:'red',desc:'Record a vendor bill and receive stock in one step.',filter:'purchase',newRoute:'#/purchases/purchase-bill/new',allRoute:'#/purchases/purchase-bill/all'}
+  }[type] || {title:'Document',badge:'DOC',tone:'blue',desc:'Create and manage business documents.',filter:type,newRoute:'#/billing',allRoute:'#/billing'};
+}
+function documentChoicePage(type) {
+  const m=documentMeta(type), docs=S.data.documents.filter(d=>d.type===m.filter).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')) || String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+  const recent=docs.slice(0,3);
+  return `<div class="doc-choice-page doc-choice-${m.tone}">
+    <div class="document-head"><div><a href="#/billing" class="back-link">← Back to Billing</a><div class="doc-title-row"><span class="doc-page-mark">${m.badge}</span><div><span class="kicker">${esc(m.badge)} WORKSPACE</span><h1>${esc(m.title)}</h1><p>${esc(m.desc)}</p></div></div></div></div>
+    <section class="choice-actions"><a class="choice-action primary-choice" href="${m.newRoute}"><span class="choice-icon">＋</span><div><b>Generate new</b><small>Create a new ${esc(m.title.toLowerCase())} with all available options.</small></div><strong>→</strong></a><a class="choice-action" href="${m.allRoute}"><span class="choice-icon">▤</span><div><b>View all</b><small>Open the complete ${esc(m.title.toLowerCase())} register and export PDFs.</small></div><strong>→</strong></a></section>
+    <section class="panel recent-docs-choice"><div class="panel-head"><div><span class="kicker">RECENT</span><h3>Last 3 generated</h3><small>${docs.length} total in this company</small></div><a class="text-link" href="${m.allRoute}">View all →</a></div>${recent.length?`<div class="choice-recent-list">${recent.map(d=>`<div class="choice-recent-row"><div><b>${esc(d.number)}</b><small>${esc(d.partyName||'Walk-in')} · ${esc(d.date||'')}</small></div><strong>${money(d.total)}</strong><button class="mini" data-download-pdf="${esc(d.id)}">PDF</button></div>`).join('')}</div>`:emptyState('No documents yet',`No ${m.title.toLowerCase()}s have been generated for this company.`)}</section>
+  </div>`;
+}
+function documentAllPage(type) {
+  const m=documentMeta(type), docs=S.data.documents.filter(d=>d.type===m.filter).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')) || String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
+  return `<div class="doc-all-page"><div class="document-head"><div><a href="${m.filter==='purchase'?'#/purchases/purchase-bill':`#/billing/${m.filter==='invoice'?'gst-invoice':m.filter}`}" class="back-link">← Back</a><div class="doc-title-row"><span class="doc-page-mark">${m.badge}</span><div><span class="kicker">DOCUMENT REGISTER</span><h1>All ${esc(m.title)}s</h1><p>View or export every generated document for this company.</p></div></div></div><div class="doc-head-side"><a class="button primary" href="${m.newRoute}">Generate new →</a></div></div><section class="panel"><div class="table-scroll"><table><thead><tr><th>Number</th><th>Date</th><th>Party</th><th>Total</th><th>Status</th><th>PDF</th></tr></thead><tbody>${docs.length?docs.map(d=>`<tr><td><b>${esc(d.number)}</b></td><td>${esc(d.date||'')}</td><td>${esc(d.partyName||'Walk-in')}</td><td>${money(d.total)}</td><td>${statusBadge(d.status)}</td><td><button class="mini" data-download-pdf="${esc(d.id)}">View / Export PDF</button></td></tr>`).join(''):`<tr><td colspan="6"><div class="empty-state"><h3>No documents yet</h3><p>Generate the first ${esc(m.title.toLowerCase())} for this company.</p></div></td></tr>`}</tbody></table></div></section></div>`;
 }
 
 function documentPage(type) {
@@ -427,7 +449,7 @@ function passwordPage(){return pageHeader('SECURITY','Change administrator passw
 function bindPage() {
   const p = parts();
   if (p[0]==='billing' && !p[1]) bindBillingHome();
-  if (isDocRoute() || (p[0]==='purchases' && p[1]==='purchase-bill')) bindDocumentPage(docTypeFromRoute());
+  if ((isDocRoute() && p[2]==='new') || (p[0]==='purchases' && p[1]==='purchase-bill' && p[2]==='new')) bindDocumentPage(docTypeFromRoute());
   if (p[0]==='inventory' && !p[1]) bindInventory();
   if (p[0]==='inventory' && p[1]==='new') bindProductForm();
   if (p[0]==='inventory' && p[1]==='edit') bindProductForm(p[2]);

@@ -937,3 +937,79 @@ main>section:nth-child(2){animation-delay:.05s}main>section:nth-child(3){animati
   .dash-actions>a[href="/"]{display:none!important}
   .dash-actions>a.erp-top-link{display:grid!important}
 }
+
+
+/* v57: public-site theme switch + ERP-inspired glass treatment */
+.site-theme-toggle{width:40px;height:40px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.58);color:var(--ink);display:grid;place-items:center;cursor:pointer;position:relative;overflow:hidden;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);box-shadow:0 8px 24px rgba(16,33,27,.06);font-size:16px}
+.site-theme-toggle .theme-sun,.site-theme-toggle .theme-moon{grid-area:1/1;transition:transform .2s ease,opacity .2s ease}.site-theme-toggle .theme-moon{opacity:0;transform:translateY(8px) scale(.8)}.site-theme-toggle.is-dark .theme-sun{opacity:0;transform:translateY(-8px) scale(.8)}.site-theme-toggle.is-dark .theme-moon{opacity:1;transform:translateY(0) scale(1)}
+.desktop-theme-toggle{margin-left:auto}.desktop-admin-key{margin-left:8px!important}
+.mobile-theme-toggle{position:absolute;right:58px;top:14px;z-index:97;width:38px;height:38px;border-radius:11px}
+
+html[data-site-theme="dark"]{--ink:#e8eee9;--muted:#aab8b1;--line:rgba(220,235,226,.13);--paper:#0c1310;--white:#111a16;--green:#42b984;--green2:#2c9568;--shadow:0 20px 60px rgba(0,0,0,.28)}
+body.site-dark{background:radial-gradient(circle at 80% 0%,rgba(20,107,73,.18),transparent 32%),#0c1310;color:var(--ink)}
+body.site-dark .nav{background:rgba(12,19,16,.72);border-color:var(--line);box-shadow:0 12px 40px rgba(0,0,0,.18)}
+body.site-dark .hero{background:radial-gradient(circle at 85% 20%,rgba(77,155,105,.16) 0,transparent 32%),linear-gradient(180deg,#101915,#0d1511)}
+body.site-dark .hero p,body.site-dark .section p{color:var(--muted)}
+body.site-dark .card,body.site-dark .info-grid div,body.site-dark .contact-card,body.site-dark .empty-card,body.site-dark .gallery-view-toggle,body.site-dark .gallery-category-tabs,body.site-dark .view-all-photos-cta,body.site-dark .photo-card,body.site-dark .tile-category-card,body.site-dark .tile-popup-photo,body.site-dark .enquiry-popup-card{background:rgba(22,32,27,.72);border-color:var(--line);color:var(--ink);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 18px 50px rgba(0,0,0,.16)}
+body.site-dark .product-image{background:linear-gradient(145deg,#172c24,#111c17)}
+body.site-dark .ghost,body.site-dark .btn.ghost,body.site-dark .site-theme-toggle{background:rgba(255,255,255,.06);color:var(--ink);border-color:var(--line)}
+body.site-dark .reference-mobile-menu summary{color:var(--ink)!important;background:rgba(255,255,255,.05)!important;border-color:var(--line)!important}
+body.site-dark .reference-mobile-menu .mobile-menu-panel{background:rgba(12,19,16,.92)!important;border-color:var(--line)!important;backdrop-filter:blur(24px)!important;-webkit-backdrop-filter:blur(24px)!important}
+body.site-dark .reference-mobile-menu .mobile-menu-panel a{color:var(--ink)!important;border-color:var(--line)!important}
+body.site-dark .stats{border-color:var(--line)}
+body.site-dark .stats span,body.site-dark footer{color:var(--muted)}
+body.site-dark footer{border-color:var(--line)}
+body.site-dark .admin-link{border-color:var(--line);color:var(--ink)}
+body.site-dark .section.alt{background:rgba(18,29,24,.72)}
+body.site-dark .section,body.site-dark .contact{position:relative}
+body.site-dark .reference-section-head,.site-dark .reference-hero-copy,.site-dark .reference-stats,.site-dark .reference-moments,.site-dark .reference-contact-cta{filter:none}
+
+/* Glass blur in both themes, kept subtle in light mode. */
+.nav,.card,.info-grid div,.contact-card,.empty-card,.stats,.reference-contact-cta,.location-card,.category-card,.photo-card,.gallery-view-toggle,.gallery-category-tabs,.enquiry-popup-card{backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+@media(max-width:720px){.desktop-theme-toggle{display:none!important}.reference-mobile-controls .mobile-theme-toggle{display:grid!important}.reference-mobile-menu{margin-left:0!important}.reference-mobile-menu summary{border:0!important;background:transparent!important}.reference-mobile-menu[open] summary{border:0!important;background:transparent!important}}
+@media(min-width:721px){.mobile-theme-toggle{display:none!important}}
+
+/* v58 — unified mobile navigation + shared theme */
+.mobile-menu-trigger,.mobile-menu-panel,.mobile-menu-overlay{display:none}
+@media(max-width:720px){
+  .reference-mobile-controls{position:absolute!important;inset:0!important;width:100%!important;height:70px!important;margin:0!important;display:block!important;pointer-events:none!important}
+  .reference-mobile-controls .mobile-theme-toggle{pointer-events:auto!important;position:absolute!important;right:58px!important;top:14px!important}
+  .reference-mobile-controls .reference-admin{pointer-events:auto!important;position:absolute!important;right:7px!important;top:14px!important;z-index:97!important}
+  .mobile-menu-trigger{display:grid!important;place-items:center;position:absolute!important;left:7px!important;top:14px!important;width:42px!important;height:42px!important;border:0!important;background:transparent!important;color:var(--ink)!important;z-index:110!important;pointer-events:auto!important;padding:0!important}
+  .mobile-menu-trigger .menu-bars{display:grid;gap:5px;width:27px}
+  .mobile-menu-trigger .menu-bars i{display:block;height:2px;background:currentColor;border-radius:3px;transition:transform .2s ease,width .2s ease}
+  .mobile-menu-trigger .menu-arrow{display:none;width:30px;height:22px;position:relative}
+  .mobile-menu-trigger .menu-arrow:before{content:"";position:absolute;left:0;top:10px;width:30px;height:2px;background:currentColor;border-radius:2px}
+  .mobile-menu-trigger .menu-arrow:after{content:"";position:absolute;left:0;top:4px;width:12px;height:12px;border-left:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);transform-origin:center}
+  .mobile-menu-panel{display:block!important;position:fixed!important;z-index:105!important;left:0!important;top:0!important;bottom:0!important;width:min(78vw,330px)!important;background:rgba(246,248,245,.96)!important;border-right:1px solid var(--line)!important;box-shadow:22px 0 60px rgba(16,33,27,.12)!important;backdrop-filter:blur(26px)!important;-webkit-backdrop-filter:blur(26px)!important;transform:translateX(-102%)!important;transition:transform .24s ease!important;padding:92px 16px 24px!important;overflow:auto!important}
+  .mobile-menu-panel nav{display:grid!important;gap:0!important}
+  .mobile-menu-panel nav a{display:flex!important;align-items:center!important;min-height:74px!important;padding:0 26px!important;border-bottom:1px solid var(--line)!important;color:var(--ink)!important;font:600 17px 'Space Grotesk'!important}
+  .mobile-menu-panel nav a:first-child{border-top:1px solid var(--line)!important;border-radius:0!important}
+  .mobile-menu-overlay{display:block!important;position:fixed!important;inset:0!important;z-index:100!important;background:rgba(7,14,11,.48)!important;backdrop-filter:blur(3px)!important;-webkit-backdrop-filter:blur(3px)!important;opacity:0!important;pointer-events:none!important;transition:opacity .24s ease!important}
+  body.mobile-menu-open .mobile-menu-panel{transform:translateX(0)!important}
+  body.mobile-menu-open .mobile-menu-overlay{opacity:1!important;pointer-events:auto!important}
+  body.mobile-menu-open .mobile-menu-trigger{left:min(78vw,330px)!important;transform:translateX(-50%)!important;color:var(--green)!important}
+  body.mobile-menu-open .mobile-menu-trigger .menu-bars{display:none!important}
+  body.mobile-menu-open .mobile-menu-trigger .menu-arrow{display:block!important}
+  body.mobile-menu-open .reference-mobile-controls{z-index:120!important}
+  body.mobile-menu-open .reference-admin,body.mobile-menu-open .mobile-theme-toggle{z-index:121!important}
+}
+@media(min-width:721px){.mobile-menu-trigger,.mobile-menu-panel,.mobile-menu-overlay{display:none!important}}
+
+/* Shared theme preference across public site, admin and ERP. */
+html[data-site-theme="dark"] .dashboard-page{background:radial-gradient(circle at 85% 0%,rgba(20,107,73,.16),transparent 30%),#0c1310;color:#e8eee9}
+html[data-site-theme="dark"] .dashboard-page .dash-nav,html[data-site-theme="dark"] .dashboard-page .admin-section,html[data-site-theme="dark"] .dashboard-page .manage-card,html[data-site-theme="dark"] .dashboard-page .password-editor-card,html[data-site-theme="dark"] .dashboard-page .frontend-subnav,html[data-site-theme="dark"] .dashboard-page .admin-main-tabs{background:rgba(18,28,23,.82);border-color:rgba(220,235,226,.13);color:#e8eee9;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+html[data-site-theme="dark"] .dashboard-page input,html[data-site-theme="dark"] .dashboard-page textarea,html[data-site-theme="dark"] .dashboard-page select{background:#111a16;color:#e8eee9;border-color:rgba(220,235,226,.13)}
+html[data-site-theme="dark"] .dashboard-page label,html[data-site-theme="dark"] .dashboard-page .admin-head p,html[data-site-theme="dark"] .dashboard-page .fine,html[data-site-theme="dark"] .dashboard-page .manage-card span{color:#aab8b1}
+html[data-site-theme="dark"] .dashboard-page .btn.ghost{background:rgba(255,255,255,.05);color:#e8eee9;border-color:rgba(220,235,226,.13)}
+html[data-site-theme="dark"] .dashboard-page .frontend-tab:not(.active),html[data-site-theme="dark"] .dashboard-page .admin-main-tab:not(.active){color:#42b984}
+html[data-site-theme="dark"] .dashboard-page .frontend-tab.active,html[data-site-theme="dark"] .dashboard-page .admin-main-tab.active{background:#146b49;color:#fff}
+
+/* v58 admin/login theme controls */
+.admin-theme-toggle{margin-left:0!important;flex:none}
+.admin-login-theme{position:fixed;top:24px;right:24px;z-index:20}
+html[data-site-theme="dark"] .admin-page{background:radial-gradient(circle at 20% 20%,rgba(20,107,73,.22),transparent 35%),#0c1310;color:#e8eee9}
+html[data-site-theme="dark"] .admin-page .auth-card{background:rgba(18,28,23,.86);border-color:rgba(220,235,226,.13);color:#e8eee9;backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px)}
+html[data-site-theme="dark"] .admin-page .auth-card input{background:#111a16;color:#e8eee9;border-color:rgba(220,235,226,.13)}
+html[data-site-theme="dark"] .admin-page .muted,html[data-site-theme="dark"] .admin-page .back{color:#aab8b1}
+html[data-site-theme="dark"] .admin-page .site-theme-toggle{background:rgba(255,255,255,.06);color:#e8eee9;border-color:rgba(220,235,226,.13)}

@@ -10,16 +10,18 @@
     <a class="<%= current === 'photos' ? 'active' : '' %>" href="/photos">Photos</a>
     <a class="<%= current === 'contact' ? 'active' : '' %>" href="/contact">Contact</a>
   </nav>
+  <button class="site-theme-toggle desktop-theme-toggle" type="button" aria-label="Switch theme" title="Switch theme"><span class="theme-sun">☀</span><span class="theme-moon">◐</span></button>
   <a class="admin-link desktop-admin-key" href="/admin/login" aria-label="Admin login" title="Admin login"><span class="admin-lock" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span></a>
   <div class="reference-mobile-controls">
+    <button class="site-theme-toggle mobile-theme-toggle" type="button" aria-label="Switch theme" title="Switch theme"><span class="theme-sun">☀</span><span class="theme-moon">◐</span></button>
     <a class="admin-link reference-admin" href="/admin/login" aria-label="Admin login" title="Admin login"><span class="admin-lock" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span></a>
-    <details class="mobile-menu reference-mobile-menu" id="site-mobile-menu">
-      <summary aria-label="Open navigation"><span class="menu-bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="menu-arrow" aria-hidden="true">←</span></summary>
-      <button class="mobile-menu-overlay" type="button" aria-label="Close menu"></button>
-      <div class="mobile-menu-panel">
+    <button class="mobile-menu-trigger" id="site-menu-trigger" type="button" aria-label="Open navigation" aria-expanded="false"><span class="menu-bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="menu-arrow" aria-hidden="true"></span></button>
+    <div class="mobile-menu-overlay" id="site-mobile-overlay" aria-hidden="true"></div>
+    <aside class="mobile-menu-panel" id="site-mobile-panel" aria-hidden="true">
+      <nav aria-label="Mobile navigation">
         <a href="/">Home</a><a href="/farm-machinery">Farm Machinery</a><a href="/solar-solutions">Solar Solutions</a><a href="/branches">Our Branches</a><a href="/photos">Gallery</a><a href="/about">About Us</a><a href="/contact">Contact</a>
-      </div>
-    </details>
+      </nav>
+    </aside>
   </div>
 </header>
 <% if(activePage === 'farm' || activePage === 'solar'){ %>
@@ -29,4 +31,4 @@
   <a href="tel:<%= quickPhone %>" aria-label="Call Swaraj Agro"><span>⌕</span> Call</a>
 </div>
 <% } %>
-<script>document.addEventListener('DOMContentLoaded',()=>{const m=document.getElementById('site-mobile-menu');const o=m&&m.querySelector('.mobile-menu-overlay');if(!m)return;const sync=()=>document.body.classList.toggle('mobile-menu-open',m.open);m.addEventListener('toggle',sync);if(o)o.addEventListener('click',()=>{m.removeAttribute('open');sync()});sync()});</script>
+<script>document.addEventListener('DOMContentLoaded',()=>{const root=document.documentElement,body=document.body,menu=document.getElementById('site-menu-trigger'),panel=document.getElementById('site-mobile-panel'),overlay=document.getElementById('site-mobile-overlay');const saved=localStorage.getItem('swarajTheme')||localStorage.getItem('swarajSiteTheme')||'light';const applyTheme=t=>{root.dataset.siteTheme=t;body.classList.toggle('site-dark',t==='dark');document.querySelectorAll('.site-theme-toggle').forEach(b=>{b.classList.toggle('is-dark',t==='dark');b.setAttribute('aria-label',t==='dark'?'Switch to light mode':'Switch to dark mode')});localStorage.setItem('swarajTheme',t);localStorage.setItem('swarajSiteTheme',t)};applyTheme(saved);document.querySelectorAll('.site-theme-toggle').forEach(b=>b.addEventListener('click',()=>applyTheme(root.dataset.siteTheme==='dark'?'light':'dark')));window.addEventListener('storage',e=>{if(e.key==='swarajTheme'&&e.newValue)applyTheme(e.newValue)});const closeMenu=()=>{body.classList.remove('mobile-menu-open');menu?.setAttribute('aria-expanded','false');panel?.setAttribute('aria-hidden','true');overlay?.setAttribute('aria-hidden','true')};const openMenu=()=>{body.classList.add('mobile-menu-open');menu?.setAttribute('aria-expanded','true');panel?.setAttribute('aria-hidden','false');overlay?.setAttribute('aria-hidden','false')};menu?.addEventListener('click',()=>body.classList.contains('mobile-menu-open')?closeMenu():openMenu());overlay?.addEventListener('click',closeMenu);panel?.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});});</script>
