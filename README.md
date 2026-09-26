@@ -74,3 +74,8 @@ This build integrates the supplied Swaraj ERP 3.0 workspace into the same Render
 ERP data is persisted in the existing MongoDB database in a dedicated `erp` collection, so no second Render service or second database is required. Website and ERP product masters are bridged automatically: Farm Machinery maps to Swaraj Agro, Solar Solution maps to DS Swaraj Agro, and ERP changes to those public product masters are reflected back on the website. Website enquiries are also copied into the ERP customer master for the matching company.
 
 The ERP workspace keeps its own billing, purchases, inventory, parties, money, reports and admin controls. Public website content and frontend editing remain in the existing Swaraj Agro admin dashboard.
+
+
+## V59 changes
+- Removed the public-site light/dark switch entirely. The public website remains light; admin and ERP retain theme controls.
+- Fixed mobile drawer stacking so the home-screen admin lock is covered by the drawer/overlay when the menu opens, while the single close arrow stays above the drawer boundary.

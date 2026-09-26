@@ -973,8 +973,7 @@ body.site-dark .reference-section-head,.site-dark .reference-hero-copy,.site-dar
 .mobile-menu-trigger,.mobile-menu-panel,.mobile-menu-overlay{display:none}
 @media(max-width:720px){
   .reference-mobile-controls{position:absolute!important;inset:0!important;width:100%!important;height:70px!important;margin:0!important;display:block!important;pointer-events:none!important}
-  .reference-mobile-controls .mobile-theme-toggle{pointer-events:auto!important;position:absolute!important;right:58px!important;top:14px!important}
-  .reference-mobile-controls .reference-admin{pointer-events:auto!important;position:absolute!important;right:7px!important;top:14px!important;z-index:97!important}
+  .reference-mobile-controls .reference-admin{pointer-events:auto!important;position:absolute!important;right:7px!important;top:14px!important;z-index:90!important}
   .mobile-menu-trigger{display:grid!important;place-items:center;position:absolute!important;left:7px!important;top:14px!important;width:42px!important;height:42px!important;border:0!important;background:transparent!important;color:var(--ink)!important;z-index:110!important;pointer-events:auto!important;padding:0!important}
   .mobile-menu-trigger .menu-bars{display:grid;gap:5px;width:27px}
   .mobile-menu-trigger .menu-bars i{display:block;height:2px;background:currentColor;border-radius:3px;transition:transform .2s ease,width .2s ease}
@@ -988,11 +987,10 @@ body.site-dark .reference-section-head,.site-dark .reference-hero-copy,.site-dar
   .mobile-menu-overlay{display:block!important;position:fixed!important;inset:0!important;z-index:100!important;background:rgba(7,14,11,.48)!important;backdrop-filter:blur(3px)!important;-webkit-backdrop-filter:blur(3px)!important;opacity:0!important;pointer-events:none!important;transition:opacity .24s ease!important}
   body.mobile-menu-open .mobile-menu-panel{transform:translateX(0)!important}
   body.mobile-menu-open .mobile-menu-overlay{opacity:1!important;pointer-events:auto!important}
-  body.mobile-menu-open .mobile-menu-trigger{left:min(78vw,330px)!important;transform:translateX(-50%)!important;color:var(--green)!important}
+  body.mobile-menu-open .mobile-menu-trigger{left:min(78vw,330px)!important;transform:translateX(-50%)!important;color:var(--green)!important;z-index:120!important}
   body.mobile-menu-open .mobile-menu-trigger .menu-bars{display:none!important}
   body.mobile-menu-open .mobile-menu-trigger .menu-arrow{display:block!important}
-  body.mobile-menu-open .reference-mobile-controls{z-index:120!important}
-  body.mobile-menu-open .reference-admin,body.mobile-menu-open .mobile-theme-toggle{z-index:121!important}
+  body.mobile-menu-open .reference-admin{z-index:90!important}
 }
 @media(min-width:721px){.mobile-menu-trigger,.mobile-menu-panel,.mobile-menu-overlay{display:none!important}}
 
@@ -1013,3 +1011,7 @@ html[data-site-theme="dark"] .admin-page .auth-card{background:rgba(18,28,23,.86
 html[data-site-theme="dark"] .admin-page .auth-card input{background:#111a16;color:#e8eee9;border-color:rgba(220,235,226,.13)}
 html[data-site-theme="dark"] .admin-page .muted,html[data-site-theme="dark"] .admin-page .back{color:#aab8b1}
 html[data-site-theme="dark"] .admin-page .site-theme-toggle{background:rgba(255,255,255,.06);color:#e8eee9;border-color:rgba(220,235,226,.13)}
+
+/* v59: public site is intentionally light-only. Admin and ERP retain their own shared theme controls. */
+body.site-dark, html[data-site-theme="dark"] body{background:var(--white,#fff);color:var(--ink,#10221b)}
+html[data-site-theme="dark"]{--ink:#10221b;--muted:#60736b;--line:#dfe8e3;--paper:#fbfdfb;--white:#fff;--green:#087f5b;--green2:#0a6f53;--shadow:0 20px 60px rgba(16,33,27,.08)}
