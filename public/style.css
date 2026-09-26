@@ -1015,3 +1015,13 @@ html[data-site-theme="dark"] .admin-page .site-theme-toggle{background:rgba(255,
 /* v59: public site is intentionally light-only. Admin and ERP retain their own shared theme controls. */
 body.site-dark, html[data-site-theme="dark"] body{background:var(--white,#fff);color:var(--ink,#10221b)}
 html[data-site-theme="dark"]{--ink:#10221b;--muted:#60736b;--line:#dfe8e3;--paper:#fbfdfb;--white:#fff;--green:#087f5b;--green2:#0a6f53;--shadow:0 20px 60px rgba(16,33,27,.08)}
+
+
+/* v60: public mobile drawer has no visible close/arrow control; close via overlay or menu trigger area when available. */
+@media(max-width:720px){
+  body.mobile-menu-open .mobile-menu-trigger{
+    display:none!important;
+  }
+}
+
+/* v60: public site stays light; no theme control styling is reintroduced here. */

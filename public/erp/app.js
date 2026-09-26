@@ -310,8 +310,15 @@ function documentChoicePage(type) {
 }
 function documentAllPage(type) {
   const m=documentMeta(type), docs=S.data.documents.filter(d=>d.type===m.filter).sort((a,b)=>String(b.date||'').localeCompare(String(a.date||'')) || String(b.createdAt||'').localeCompare(String(a.createdAt||'')));
-  return `<div class="doc-all-page"><div class="document-head"><div><a href="${m.filter==='purchase'?'#/purchases/purchase-bill':`#/billing/${m.filter==='invoice'?'gst-invoice':m.filter}`}" class="back-link">← Back</a><div class="doc-title-row"><span class="doc-page-mark">${m.badge}</span><div><span class="kicker">DOCUMENT REGISTER</span><h1>All ${esc(m.title)}s</h1><p>View or export every generated document for this company.</p></div></div></div><div class="doc-head-side"><a class="button primary" href="${m.newRoute}">Generate new →</a></div></div><section class="panel"><div class="table-scroll"><table><thead><tr><th>Number</th><th>Date</th><th>Party</th><th>Total</th><th>Status</th><th>PDF</th></tr></thead><tbody>${docs.length?docs.map(d=>`<tr><td><b>${esc(d.number)}</b></td><td>${esc(d.date||'')}</td><td>${esc(d.partyName||'Walk-in')}</td><td>${money(d.total)}</td><td>${statusBadge(d.status)}</td><td><button class="mini" data-download-pdf="${esc(d.id)}">View / Export PDF</button></td></tr>`).join(''):`<tr><td colspan="6"><div class="empty-state"><h3>No documents yet</h3><p>Generate the first ${esc(m.title.toLowerCase())} for this company.</p></div></td></tr>`}</tbody></table></div></section></div>`;
+  const back = m.filter==='purchase' ? '#/purchases/purchase-bill' : `#/billing/${m.filter==='invoice'?'gst-invoice':m.filter}`;
+  return `<div class="billing-subpage-shell">
+    <div class="page-header billing-subpage-header"><div><a href="${back}" class="back-link">← Back</a><span class="kicker">DOCUMENT REGISTER</span><h1>All ${esc(m.title)}s</h1><p>View or export every generated document for this company.</p></div><div class="page-actions"><a class="button primary" href="${m.newRoute}">Generate new →</a></div></div>
+    <section class="panel billing-register-panel"><div class="panel-head"><div><span class="kicker">${esc(m.badge)} · REGISTER</span><h3>Generated ${esc(m.title)}s</h3><small>${docs.length} document${docs.length===1?'':'s'} in this company</small></div></div>
+      <div class="table-scroll"><table><thead><tr><th>Number</th><th>Date</th><th>Party</th><th>Total</th><th>Status</th><th>PDF</th></tr></thead><tbody>${docs.length?docs.map(d=>`<tr><td><b>${esc(d.number)}</b></td><td>${esc(d.date||'')}</td><td>${esc(d.partyName||'Walk-in')}</td><td>${money(d.total)}</td><td>${statusBadge(d.status)}</td><td><button class="mini" data-download-pdf="${esc(d.id)}">View / Export PDF</button></td></tr>`).join(''):`<tr><td colspan="6"><div class="empty-state"><h3>No documents yet</h3><p>Generate the first ${esc(m.title.toLowerCase())} for this company.</p></div></td></tr>`}</tbody></table></div>
+    </section>
+  </div>`;
 }
+
 
 function documentPage(type) {
   const cfg = {
@@ -322,7 +329,7 @@ function documentPage(type) {
     delivery_challan: { tone:'doc-green', eyebrow:'LOGISTICS · DISPATCH', title:'Delivery Challan', desc:'Dispatch documentation with vehicle and delivery references. It does not post a sale.', tag:'DC', party:'customer', save:'Save challan', back:'#/billing' },
     purchase: { tone:'doc-red', eyebrow:'PURCHASE · INWARD', title:'Purchase Bill', desc:'Vendor invoice entry. Posting receives stock and updates the purchase ledger in one step.', tag:'PUR', party:'supplier', save:'Post purchase bill', back:'#/purchases' }
   }[type];
-  return `<div class="document-page ${cfg.tone} variant-${type}">
+  return `<div class="billing-subpage-shell document-page-clean ${cfg.tone} variant-${type}">
     <div class="document-head"><div><a href="${cfg.back}" class="back-link">← Back</a><div class="doc-title-row"><span class="doc-page-mark">${cfg.tag}</span><div><span class="kicker">${cfg.eyebrow}</span><h1>${cfg.title}</h1><p>${cfg.desc}</p></div></div></div><div class="doc-head-side"><span class="auto-pill">AUTO NUMBER</span><span class="fy-big">FY ${fyLabel()}</span></div></div>
     ${documentVariantBody(type, cfg)}
   </div>`;
