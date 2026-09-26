@@ -140,6 +140,13 @@ app.post('/admin/login',async(req,res)=>{ try{
   res.redirect(nextPath);
  }catch(e){res.render('login',{error:e.message,resetEmail:await auth.getResetEmail(),rememberMe:false,next:safeNextPath(req.body.next||'/admin')});} });
 app.post('/admin/logout',adminOnly,(req,res)=>req.session.destroy(()=>res.redirect('/admin/login')));
+app.post('/admin/change-password',adminOnly,async(req,res)=>{ try{
+  const currentPassword=String(req.body.currentPassword||''); const newPassword=String(req.body.newPassword||''); const confirmPassword=String(req.body.confirmPassword||'');
+  if(!await auth.verify(currentPassword)){ setFlash(req,'error','Current password is incorrect.'); return res.redirect('/admin#home'); }
+  if(newPassword.length<8){ setFlash(req,'error','New password must be at least 8 characters.'); return res.redirect('/admin#home'); }
+  if(newPassword!==confirmPassword){ setFlash(req,'error','New passwords do not match.'); return res.redirect('/admin#home'); }
+  await auth.changePassword(newPassword); setFlash(req,'success','Admin password changed successfully.'); return res.redirect('/admin#home');
+ }catch(e){ setFlash(req,'error','Could not change admin password.'); return res.redirect('/admin#home'); } });
 
 app.post('/admin/reset/request',async(req,res)=>{
   const email=String(req.body.email||'').trim().toLowerCase();
@@ -164,7 +171,8 @@ app.post('/admin/reset/verify',async(req,res)=>{
 });
 
 
-app.post('/admin/enquiries/delete',adminOnly,async(req,res)=>{ try{ await store.update(d=>{ d.enquiries=(d.enquiries||[]).filter(e=>e.id!==req.body.id); }); setFlash(req,'success','Enquiry deleted.'); }catch(e){setFlash(req,'error','Could not delete enquiry.');} res.redirect('/admin#enquiries'); });
+app.post('/admin/enquiries/delete',adminOnly,async(req,res)=>{ try{ let removed=null; await store.update(d=>{ const list=d.enquiries||[]; removed=list.find(e=>e.id===req.body.id)||null; d.enquiries=list.filter(e=>e.id!==req.body.id); }); if(removed) req.session.lastDeletedEnquiry=removed; setFlash(req,'success','Enquiry deleted.'); req.session.flash.undo=!!removed; }catch(e){setFlash(req,'error','Could not delete enquiry.');} res.redirect('/admin#enquiries'); });
+app.post('/admin/enquiries/undo',adminOnly,async(req,res)=>{ try{ const removed=req.session.lastDeletedEnquiry; if(!removed){setFlash(req,'error','Nothing to undo.'); return res.redirect('/admin#enquiries');} await store.update(d=>{ d.enquiries=d.enquiries||[]; if(!d.enquiries.some(e=>e.id===removed.id)) d.enquiries.push(removed); }); delete req.session.lastDeletedEnquiry; setFlash(req,'success','Enquiry restored.'); }catch(e){setFlash(req,'error','Could not restore enquiry.');} res.redirect('/admin#enquiries'); });
 
 app.get('/admin',adminOnly,async(req,res,next)=>{ try{
   const site=await store.read(); const flash=req.session.flash; delete req.session.flash;

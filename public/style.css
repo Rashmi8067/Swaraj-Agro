@@ -899,3 +899,41 @@ main>section:nth-child(2){animation-delay:.05s}main>section:nth-child(3){animati
   .admin-main-tabs{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important}
   .admin-main-tab{padding:10px 2px!important;font-size:11px!important;line-height:1.12!important;white-space:normal!important}
 }
+
+/* v56: admin header actions, conditional frontend submenu, password editor, delete undo */
+.dash-actions{display:flex;align-items:center;gap:8px}
+.erp-top-link{display:grid;place-items:center;min-width:44px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--green);font:700 12px 'DM Sans';text-decoration:none;letter-spacing:.3px}
+.erp-top-link:hover{border-color:var(--green);background:#f5faf4}
+.logout-icon{width:40px;height:40px;border:0;border-radius:10px;background:var(--ink);color:#fff;display:grid;place-items:center;cursor:pointer;padding:0}
+.logout-icon svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.logout-icon:hover{background:var(--green)}
+.admin-main-tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+.frontend-subnav{overflow:hidden!important;width:min(680px,100%)!important;max-width:680px!important}
+.frontend-subnav:not(.visible){display:none!important}
+.password-editor-card{margin-top:28px;padding:22px;border:1px solid var(--line);border-radius:18px;background:#f8faf8;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.5fr);gap:22px;align-items:start}
+.password-editor-card h3{margin:5px 0 6px;font:600 22px/1.15 'Space Grotesk';color:var(--green)}
+.password-editor-card p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
+.password-change-form{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;align-items:end}
+.password-change-form label{display:flex;flex-direction:column;gap:6px;font-size:11px;font-weight:700;color:#42524b}
+.password-change-form input{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:10px;background:#fff;padding:10px 11px;font:13px 'DM Sans'}
+.password-change-form .btn{grid-column:1/-1;justify-self:start}
+.auto-hide-flash{display:flex;align-items:center;justify-content:space-between;gap:12px;transition:opacity .35s ease,transform .35s ease}
+.flash-undo-form{margin:0}.flash-undo{padding:7px 13px!important}
+@media(max-width:720px){
+  .dash-actions{gap:5px!important}.erp-top-link{min-width:40px;height:38px;padding:0 9px}.logout-icon{width:38px;height:38px}
+  .admin-main-tabs{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:5px!important}.admin-main-tab{padding:10px 3px!important;font-size:11px!important;white-space:normal!important}
+  .frontend-subnav{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:2px!important;padding:4px!important;width:100%!important;max-width:none!important;overflow:hidden!important}.frontend-subnav:not(.visible){display:none!important}.frontend-tab{min-width:0!important;padding:9px 2px!important;font-size:10.5px!important;white-space:nowrap!important}
+  .password-editor-card{grid-template-columns:1fr;gap:14px;padding:18px}.password-change-form{grid-template-columns:1fr}.password-change-form .btn{grid-column:auto;width:100%}
+}
+
+/* v56: one clean close arrow; it follows the shifted page/menu boundary */
+@media(max-width:720px){
+  .reference-mobile-menu[open] .menu-arrow{display:block!important;position:relative!important;width:30px!important;height:24px!important;top:auto!important;left:auto!important;box-shadow:none!important;font-size:0!important;background:transparent!important}
+  .reference-mobile-menu[open] .menu-arrow::before{content:""!important;position:absolute!important;left:0!important;top:11px!important;width:30px!important;height:2px!important;background:currentColor!important;border-radius:2px!important;transform:none!important}
+  .reference-mobile-menu[open] .menu-arrow::after{content:""!important;position:absolute!important;left:0!important;top:11px!important;width:11px!important;height:11px!important;border-left:2px solid currentColor!important;border-bottom:2px solid currentColor!important;background:transparent!important;border-radius:0!important;transform:rotate(45deg)!important;transform-origin:center!important}
+  body.mobile-menu-open .reference-mobile-menu summary{left:min(78vw,330px)!important;top:14px!important;width:42px!important;height:42px!important;transform:translateX(-50%)!important;border:0!important;background:transparent!important;box-shadow:none!important;color:var(--green)!important}
+}
+@media(max-width:720px){
+  .dash-actions>a[href="/"]{display:none!important}
+  .dash-actions>a.erp-top-link{display:grid!important}
+}
