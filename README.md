@@ -65,3 +65,12 @@ The Solar Solutions page stores the latest known DS Swaraj Agro vendor figures. 
 - Admin dashboard has an Enquiries tab with Call, WhatsApp and Delete actions.
 - Mobile WhatsApp/Call floating actions appear only on the Farm Machinery and Solar Solutions pages and use their respective numbers.
 - On mobile, the darkened space outside the expanded navigation menu is a close-menu control.
+
+
+## Integrated ERP
+
+This build integrates the supplied Swaraj ERP 3.0 workspace into the same Render/Node application at `/erp`. The existing Swaraj Agro admin session can open the ERP without a second password. ERP staff users can also use the ERP login when needed.
+
+ERP data is persisted in the existing MongoDB database in a dedicated `erp` collection, so no second Render service or second database is required. Website and ERP product masters are bridged automatically: Farm Machinery maps to Swaraj Agro, Solar Solution maps to DS Swaraj Agro, and ERP changes to those public product masters are reflected back on the website. Website enquiries are also copied into the ERP customer master for the matching company.
+
+The ERP workspace keeps its own billing, purchases, inventory, parties, money, reports and admin controls. Public website content and frontend editing remain in the existing Swaraj Agro admin dashboard.

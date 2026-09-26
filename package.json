@@ -1,6 +1,6 @@
 {
   "name": "ds-swaraj-agro-website",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "description": "Editable company website and admin panel for Swaraj Agro",
   "main": "server.js",

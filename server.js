@@ -10,6 +10,7 @@ const nodemailer=require('nodemailer');
 const store=require('./lib/store');
 const auth=require('./lib/auth');
 const { syncVendor } = require('./lib/pm-surya-sync');
+const erp = require('./lib/erp-engine');
 
 const REQUIRED_ENV=['ADMIN_PASSWORD','RESET_EMAIL','SESSION_SECRET'];
 const missingEnv=REQUIRED_ENV.filter(k=>!process.env[k]);
@@ -71,6 +72,13 @@ function smtpTransport(){
 }
 const otpStore={};
 function setFlash(req,type,msg){ req.session.flash={type,msg}; }
+function safeNextPath(v){ const n=String(v||'').trim(); return n.startsWith('/') && !n.startsWith('//') ? n : '/admin'; }
+
+app.use('/erp-assets',express.static(path.join(__dirname,'public','erp')));
+app.get('/erp',(req,res)=>res.sendFile(path.join(__dirname,'public','erp','index.html')));
+app.use('/erp-api',async(req,res,next)=>{
+  try{ if(req.session?.admin) req.__siteAdmin=true; req.url='/api'+(req.url||''); await erp.route(req,res); }catch(e){ next(e); }
+});
 
 app.get('/health',(req,res)=>res.json({status:'ok'}));
 app.get('/',async(req,res,next)=>{ try{ res.render('index',{site:await store.read()}); }catch(e){next(e);} });
@@ -84,6 +92,7 @@ app.post('/enquiry',async(req,res)=>{ try{
   if(isFarm&&!product) return res.status(400).json({ok:false,message:'Please select a farm machinery product.'});
   const enquiry={id:crypto.randomUUID(),createdAt:new Date().toISOString(),name,phone,product:product||category||'General enquiry',category,location,message};
   await store.update(d=>{ d.enquiries=d.enquiries||[]; d.enquiries.push(enquiry); });
+  try{ await erp.syncEnquiryToParty(enquiry); }catch(syncErr){ console.error('[ERP] enquiry sync failed:',syncErr.message); }
   res.json({ok:true,message:'Successfully submitted, our team will contact you shortly.'});
  }catch(e){ console.error(e); res.status(500).json({ok:false,message:'Could not submit enquiry.'}); } });
 app.get('/admin/enquiries/latest',adminOnly,async(req,res)=>{ try{ const site=await store.read(); const list=[...(site.enquiries||[])].sort((a,b)=>new Date(b.createdAt||0)-new Date(a.createdAt||0)); res.json({count:list.length,latest:list[0]||null}); }catch(e){res.status(500).json({ok:false});} });
@@ -117,17 +126,19 @@ app.get('/products',async(req,res,next)=>{ try{
  }catch(e){next(e);} });
 
 app.get('/admin/login',async(req,res,next)=>{ try{
-  if(req.session.admin) return res.redirect('/admin');
-  res.render('login',{error:null,resetEmail:await auth.getResetEmail()});
+  const nextPath=safeNextPath(req.query.next);
+  if(req.session.admin) return res.redirect(nextPath);
+  res.render('login',{error:null,resetEmail:await auth.getResetEmail(),next:nextPath,rememberMe:false});
  }catch(e){next(e);} });
 app.post('/admin/login',async(req,res)=>{ try{
+  const nextPath=safeNextPath(req.body.next||'/admin');
   const ok=await auth.verify(req.body.password||'');
-  if(!ok) return res.render('login',{error:'Invalid admin password.',resetEmail:await auth.getResetEmail(),rememberMe:false});
+  if(!ok) return res.render('login',{error:'Invalid admin password.',resetEmail:await auth.getResetEmail(),rememberMe:String(req.body.rememberMe||'')==='on',next:nextPath});
   req.session.admin=true;
   const remember=String(req.body.rememberMe||'')==='on';
   req.session.cookie.maxAge=remember?(1000*60*60*24*30):(1000*60*30);
-  res.redirect('/admin');
- }catch(e){res.render('login',{error:e.message,resetEmail:await auth.getResetEmail(),rememberMe:false});} });
+  res.redirect(nextPath);
+ }catch(e){res.render('login',{error:e.message,resetEmail:await auth.getResetEmail(),rememberMe:false,next:safeNextPath(req.body.next||'/admin')});} });
 app.post('/admin/logout',adminOnly,(req,res)=>req.session.destroy(()=>res.redirect('/admin/login')));
 
 app.post('/admin/reset/request',async(req,res)=>{
@@ -215,10 +226,12 @@ app.post('/admin/products/save',adminOnly,upload.fields([{name:'image',maxCount:
     const p={id,name:req.body.name,category,subcategory:req.body.subcategory,price:req.body.price,description:req.body.description,featured:req.body.featured==='on',image:mainImage,gallery};
     const idx=d.products.findIndex(x=>x.id===id); if(idx>=0)d.products[idx]=p; else d.products.push(p);
   });
+  try{ await erp.syncWebsiteProducts(); }catch(syncErr){ console.error('[ERP] product sync failed:',syncErr.message); }
   setFlash(req,'success','Product saved.'); res.redirect('/admin');
  }catch(e){next(e);} });
 app.post('/admin/products/delete',adminOnly,async(req,res,next)=>{ try{
   await store.update(d=>{ const p=d.products.find(x=>x.id===req.body.id); if(p?.image)safeUnlink(p.image); for(const img of (p?.gallery||[])) if(img!==p?.image) safeUnlink(img); d.products=d.products.filter(x=>x.id!==req.body.id); });
+  try{ await erp.syncWebsiteProducts(); }catch(syncErr){ console.error('[ERP] product deletion sync failed:',syncErr.message); }
   setFlash(req,'success','Product deleted.'); res.redirect('/admin');
  }catch(e){next(e);} });
 
@@ -262,6 +275,7 @@ async function refreshSolarVendor(){
 
 async function main(){
   await auth.ensureAdmin();
+  await erp.initializeERP();
   app.listen(PORT,()=>{ console.log(`DS Swaraj Agro website running at http://localhost:${PORT}`); setTimeout(refreshSolarVendor,5000); setInterval(refreshSolarVendor,6*60*60*1000); });
 }
 main().catch(err=>{ console.error('Failed to start server:',err.message); process.exit(1); });
