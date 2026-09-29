@@ -1017,11 +1017,16 @@ body.site-dark, html[data-site-theme="dark"] body{background:var(--white,#fff);c
 html[data-site-theme="dark"]{--ink:#10221b;--muted:#60736b;--line:#dfe8e3;--paper:#fbfdfb;--white:#fff;--green:#087f5b;--green2:#0a6f53;--shadow:0 20px 60px rgba(16,33,27,.08)}
 
 
-/* v60: public mobile drawer has no visible close/arrow control; close via overlay or menu trigger area when available. */
+/* v65: keep the mobile menu control visible and transform it into one clean arrow at the drawer edge. */
 @media(max-width:720px){
-  body.mobile-menu-open .mobile-menu-trigger{
-    display:none!important;
-  }
+  .mobile-menu-trigger{display:grid!important;place-items:center!important;pointer-events:auto!important;touch-action:manipulation!important;}
+  .mobile-menu-trigger .menu-bars{display:grid!important;gap:5px!important;width:27px!important;}
+  .mobile-menu-trigger .menu-arrow{display:none!important;width:30px!important;height:22px!important;position:relative!important;}
+  .mobile-menu-trigger .menu-arrow::before{content:""!important;position:absolute!important;left:0!important;top:10px!important;width:30px!important;height:2px!important;background:currentColor!important;border-radius:2px!important;}
+  .mobile-menu-trigger .menu-arrow::after{content:""!important;position:absolute!important;left:0!important;top:4px!important;width:12px!important;height:12px!important;border-left:2px solid currentColor!important;border-bottom:2px solid currentColor!important;background:transparent!important;transform:rotate(45deg)!important;transform-origin:center!important;}
+  body.mobile-menu-open .mobile-menu-trigger{display:grid!important;left:min(78vw,330px)!important;transform:translateX(-50%)!important;color:var(--green)!important;z-index:120!important;}
+  body.mobile-menu-open .mobile-menu-trigger .menu-bars{display:none!important;}
+  body.mobile-menu-open .mobile-menu-trigger .menu-arrow{display:block!important;}
 }
 
 /* v60: public site stays light; no theme control styling is reintroduced here. */
