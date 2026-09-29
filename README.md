@@ -79,3 +79,13 @@ The ERP workspace keeps its own billing, purchases, inventory, parties, money, r
 ## V59 changes
 - Removed the public-site light/dark switch entirely. The public website remains light; admin and ERP retain theme controls.
 - Fixed mobile drawer stacking so the home-screen admin lock is covered by the drawer/overlay when the menu opens, while the single close arrow stays above the drawer boundary.
+
+
+## V66 visual rebuild
+- Public Swaraj Agro pages refreshed to a restrained editorial/app-style design inspired by the approved visual mockup.
+- Added a two-card “What we do” section on the home page and improved trust stats, typography, spacing, cards, catalogue layout and contact presentation.
+- Farm Machinery and Solar preview sections now show up to three products/configuration cards on desktop.
+- All Products catalogue is three columns on desktop and one column on mobile.
+- Solar page includes a simple system-options strip (2 kWp, 3 kWp, Hybrid 3–10 kWp).
+- Mobile navigation is rebuilt as a fixed left drawer with a single arrow close control and hidden home controls while the drawer is open.
+- Public customization controls remain device-local (accent, font, light/dark, text size, reduced motion).
