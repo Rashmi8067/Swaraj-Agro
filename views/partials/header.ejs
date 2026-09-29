@@ -9,7 +9,6 @@
     <a class="<%= current === 'branches' ? 'active' : '' %>" href="/branches">Branches</a>
     <a class="<%= current === 'photos' ? 'active' : '' %>" href="/photos">Photos</a>
     <a class="<%= current === 'contact' ? 'active' : '' %>" href="/contact">Contact</a>
-    <button type="button" class="reference-desktop-customize" id="desktop-customize-trigger" aria-expanded="false" aria-controls="customize-sheet"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10M14 4v6M8 14v6"/></svg> Customize</button>
   </nav>
   <a class="admin-link desktop-admin-key" href="/admin/login" aria-label="Admin login" title="Admin login"><span class="admin-lock" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg></span></a>
   <div class="reference-mobile-controls">
@@ -17,61 +16,12 @@
     <button class="mobile-menu-trigger" id="site-menu-trigger" type="button" aria-label="Open navigation" aria-expanded="false"><span class="menu-bars" aria-hidden="true"><i></i><i></i><i></i></span><span class="menu-arrow" aria-hidden="true"></span></button>
     <div class="mobile-menu-overlay" id="site-mobile-overlay" aria-hidden="true"></div>
     <aside class="mobile-menu-panel" id="site-mobile-panel" aria-hidden="true">
-      <div class="modern-menu-head"><div class="modern-menu-brand"><img src="/swaraj-agro-default.svg" alt=""><div><strong>Swaraj Agro</strong><small>Agro • Solar • Equipment</small></div></div><button class="modern-menu-close" id="modern-menu-close" type="button" aria-label="Close menu">×</button></div>
-      <nav class="modern-menu-links" aria-label="Mobile navigation">
+      <nav aria-label="Mobile navigation">
         <a href="/">Home</a><a href="/farm-machinery">Farm Machinery</a><a href="/solar-solutions">Solar Solutions</a><a href="/branches">Our Branches</a><a href="/photos">Gallery</a><a href="/about">About Us</a><a href="/contact">Contact</a>
       </nav>
-      <button class="modern-menu-customize-trigger" id="mobile-customize-open" type="button" aria-haspopup="dialog" aria-expanded="false">
-        <span><strong>Customize</strong><small>Personalize your website</small></span><b aria-hidden="true">→</b>
-      </button>
     </aside>
   </div>
 </header>
-<div class="customize-sheet" id="customize-sheet" hidden aria-hidden="true">
-  <div class="customize-sheet-backdrop" id="customize-sheet-backdrop"></div>
-  <section class="customize-sheet-card" role="dialog" aria-modal="true" aria-labelledby="customize-sheet-title">
-    <div class="customize-sheet-head">
-      <div><span class="customize-kicker">PERSONALIZATION</span><h2 id="customize-sheet-title">Customize your website</h2><p>These settings are saved only on this device.</p></div>
-      <button class="customize-sheet-close" id="customize-sheet-close" type="button" aria-label="Close customization">×</button>
-    </div>
-    <div class="customize-option-block">
-      <div class="customize-option-head"><strong>Website color</strong><span>Accent</span></div>
-      <div class="customize-swatches" role="group" aria-label="Website color choices">
-        <button class="customize-swatch" data-accent="green" style="--swatch:#146b49" aria-label="Swaraj green" title="Swaraj green"><span>✓</span></button>
-        <button class="customize-swatch" data-accent="forest" style="--swatch:#285943" aria-label="Forest green" title="Forest green"><span>✓</span></button>
-        <button class="customize-swatch" data-accent="ocean" style="--swatch:#176b82" aria-label="Ocean blue" title="Ocean blue"><span>✓</span></button>
-        <button class="customize-swatch" data-accent="indigo" style="--swatch:#4b4b9b" aria-label="Indigo" title="Indigo"><span>✓</span></button>
-        <button class="customize-swatch" data-accent="terracotta" style="--swatch:#b85c3c" aria-label="Terracotta" title="Terracotta"><span>✓</span></button>
-        <button class="customize-swatch" data-accent="plum" style="--swatch:#74476f" aria-label="Plum" title="Plum"><span>✓</span></button>
-        <button class="customize-swatch" data-accent="sunset" style="--swatch:linear-gradient(135deg,#f08a3c 0 52%,#c84b4b 52%)" aria-label="Sunset" title="Sunset"><span>✓</span></button>
-        <button class="customize-swatch" data-accent="tealgold" style="--swatch:linear-gradient(135deg,#0b766e 0 52%,#d3a449 52%)" aria-label="Teal gold" title="Teal gold"><span>✓</span></button>
-        <button class="customize-swatch" data-accent="navycoral" style="--swatch:linear-gradient(135deg,#1e3557 0 52%,#f07b70 52%)" aria-label="Navy coral" title="Navy coral"><span>✓</span></button>
-        <button class="customize-swatch" data-accent="sageclay" style="--swatch:linear-gradient(135deg,#78936b 0 52%,#c87b62 52%)" aria-label="Sage clay" title="Sage clay"><span>✓</span></button>
-        <button class="customize-swatch" data-accent="berrycream" style="--swatch:linear-gradient(135deg,#8a3d63 0 52%,#f0dec7 52%)" aria-label="Berry cream" title="Berry cream"><span>✓</span></button>
-        <button class="customize-swatch" data-accent="cobaltmint" style="--swatch:linear-gradient(135deg,#3658a7 0 52%,#7de0c4 52%)" aria-label="Cobalt mint" title="Cobalt mint"><span>✓</span></button>
-      </div>
-    </div>
-    <div class="customize-option-block">
-      <div class="customize-option-head"><strong>Font style</strong><span>8 options</span></div>
-      <div class="customize-fonts">
-        <button class="customize-font-btn" data-font="DM Sans">DM Sans</button><button class="customize-font-btn" data-font="Space Grotesk">Space Grotesk</button><button class="customize-font-btn" data-font="Inter">Inter</button><button class="customize-font-btn" data-font="Manrope">Manrope</button><button class="customize-font-btn" data-font="Outfit">Outfit</button><button class="customize-font-btn" data-font="Poppins">Poppins</button><button class="customize-font-btn" data-font="Plus Jakarta Sans">Jakarta Sans</button><button class="customize-font-btn" data-font="Nunito Sans">Nunito Sans</button>
-      </div>
-    </div>
-    <div class="customize-option-block">
-      <div class="customize-option-head"><strong>Mode</strong><span>Appearance</span></div>
-      <div class="customize-mode"><button class="customize-mode-btn" data-mode="light">☀ Light</button><button class="customize-mode-btn" data-mode="dark">◐ Dark</button></div>
-    </div>
-    <div class="customize-option-block">
-      <div class="customize-option-head"><strong>Text size</strong><span>Readability</span></div>
-      <div class="customize-text-size"><button class="customize-text-btn" data-text-size="small">Small</button><button class="customize-text-btn" data-text-size="default">Default</button><button class="customize-text-btn" data-text-size="large">Large</button></div>
-    </div>
-    <div class="customize-option-block customize-switch-row">
-      <div><strong>Reduce motion</strong><span>Use fewer animations.</span></div>
-      <button class="customize-switch" id="customize-motion-toggle" type="button" role="switch" aria-checked="false"><span></span></button>
-    </div>
-    <div class="customize-sheet-foot"><button class="customize-reset" id="customize-reset" type="button">Reset to Swaraj defaults</button><button class="customize-done" id="customize-done" type="button">Done</button></div>
-  </section>
-</div>
 <% if(activePage === 'farm' || activePage === 'solar'){ %>
 <div class="mobile-floating-actions <%= activePage === 'farm' ? 'farm-quick-contact' : 'solar-quick-contact' %>" aria-label="Quick contact">
   <% const quickPhone=activePage === 'farm' ? '7735903203' : '9861515980'; const waPhone=quickPhone.replace(/\D/g,''); %>
@@ -79,75 +29,4 @@
   <a href="tel:<%= quickPhone %>" aria-label="Call Swaraj Agro"><span>⌕</span> Call</a>
 </div>
 <% } %>
-<script>
-const initPublicHeader=()=>{
-  const body=document.body, root=document.documentElement, menu=document.getElementById('site-menu-trigger'), panel=document.getElementById('site-mobile-panel'), overlay=document.getElementById('site-mobile-overlay');
-  const closeMenu=()=>{body.classList.remove('mobile-menu-open');menu?.setAttribute('aria-expanded','false');panel?.setAttribute('aria-hidden','true');overlay?.setAttribute('aria-hidden','true')};
-  const openMenu=()=>{body.classList.add('mobile-menu-open');menu?.setAttribute('aria-expanded','true');panel?.setAttribute('aria-hidden','false');overlay?.setAttribute('aria-hidden','false')};
-  menu?.addEventListener('click',()=>body.classList.contains('mobile-menu-open')?closeMenu():openMenu());
-  overlay?.addEventListener('click',closeMenu); panel?.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',closeMenu));
-  document.getElementById('modern-menu-close')?.addEventListener('click',closeMenu); document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMenu();closeCustomizer();}});
-
-  const accents={
-    green:['#146b49','#0d5138','#eaf5e8','#c7ef55'],forest:['#285943','#1b4432','#e8f1e9','#b9d7b6'],ocean:['#176b82','#0f5064','#e7f4f7','#8ed7e8'],indigo:['#4b4b9b','#373775','#eeeeff','#b8b8ff'],terracotta:['#b85c3c','#8f432c','#fff0e9','#f0b59e'],plum:['#74476f','#573353','#f6eaf4','#d9a9cf'],
-    sunset:['#d65b3f','#8e3245','#fff0ea','#ffd0ae'],tealgold:['#0b766e','#07564f','#e4f5f1','#f3cf76'],navycoral:['#1e3557','#14243b','#eaf0fa','#f6a6a0'],sageclay:['#78936b','#566c4d','#eef3eb','#d9a68c'],berrycream:['#8a3d63','#642c49','#faeef4','#e4c9ad'],cobaltmint:['#3658a7','#263e78','#edf1ff','#8be2c4']
-  };
-  const fontFallback='DM Sans';
-  const customizeSheet=document.getElementById('customize-sheet');
-  const openCustomizer=()=>{
-    if(!customizeSheet)return;
-    closeMenu();
-    customizeSheet.hidden=false; customizeSheet.setAttribute('aria-hidden','false');
-    document.body.classList.add('customize-open');
-    requestAnimationFrame(()=>{document.getElementById('customize-sheet-close')?.focus();});
-    document.getElementById('mobile-customize-open')?.setAttribute('aria-expanded','true');
-  };
-  const closeCustomizer=()=>{
-    if(!customizeSheet)return;
-    customizeSheet.hidden=true; customizeSheet.setAttribute('aria-hidden','true');
-    document.body.classList.remove('customize-open');
-    document.getElementById('mobile-customize-open')?.setAttribute('aria-expanded','false');
-  };
-  const applyCustomization=()=>{
-    const accent=localStorage.getItem('swarajPublicAccent')||'green';
-    const font=localStorage.getItem('swarajPublicFont')||fontFallback;
-    const mode=localStorage.getItem('swarajPublicTheme')||'light';
-    const textSize=localStorage.getItem('swarajPublicTextSize')||'default';
-    const reduceMotion=localStorage.getItem('swarajPublicReduceMotion')==='1';
-    const a=accents[accent]||accents.green;
-    root.style.setProperty('--user-font',`'${font}',sans-serif`);
-    root.style.setProperty('--user-accent',a[0]); root.style.setProperty('--user-accent2',a[1]);
-    root.style.setProperty('--user-soft',a[2]); root.style.setProperty('--user-highlight',a[3]);
-    root.dataset.publicTheme=mode; root.dataset.publicTextSize=textSize; root.dataset.publicFont=font;
-    body.classList.add('public-custom-font');
-    if(reduceMotion)root.dataset.reduceMotion='true'; else delete root.dataset.reduceMotion;
-    document.querySelectorAll('.customize-swatch').forEach(b=>{const on=b.dataset.accent===accent;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
-    document.querySelectorAll('.customize-font-btn').forEach(b=>{const on=b.dataset.font===font;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
-    document.querySelectorAll('.customize-mode-btn').forEach(b=>{const on=b.dataset.mode===mode;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
-    document.querySelectorAll('.customize-text-btn').forEach(b=>{const on=b.dataset.textSize===textSize;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
-    const motion=document.getElementById('customize-motion-toggle'); if(motion){motion.classList.toggle('active',reduceMotion);motion.setAttribute('aria-checked',String(reduceMotion));}
-  };
-  document.getElementById('mobile-customize-open')?.addEventListener('click',openCustomizer);
-  document.getElementById('desktop-customize-trigger')?.addEventListener('click',e=>{e.stopPropagation();openCustomizer();});
-  document.getElementById('customize-sheet-backdrop')?.addEventListener('click',closeCustomizer);
-  document.getElementById('customize-sheet-close')?.addEventListener('click',closeCustomizer);
-  document.getElementById('customize-done')?.addEventListener('click',closeCustomizer);
-  document.getElementById('customize-motion-toggle')?.addEventListener('click',()=>{
-    const next=localStorage.getItem('swarajPublicReduceMotion')!=='1'; localStorage.setItem('swarajPublicReduceMotion',next?'1':'0'); applyCustomization();
-  });
-  document.querySelectorAll('.customize-swatch').forEach(b=>b.addEventListener('click',()=>{localStorage.setItem('swarajPublicAccent',b.dataset.accent);applyCustomization();}));
-  document.querySelectorAll('.customize-font-btn').forEach(b=>b.addEventListener('click',()=>{localStorage.setItem('swarajPublicFont',b.dataset.font);applyCustomization();}));
-  document.querySelectorAll('.customize-mode-btn').forEach(b=>b.addEventListener('click',()=>{localStorage.setItem('swarajPublicTheme',b.dataset.mode);applyCustomization();}));
-  document.querySelectorAll('.customize-text-btn').forEach(b=>b.addEventListener('click',()=>{localStorage.setItem('swarajPublicTextSize',b.dataset.textSize);applyCustomization();}));
-  document.getElementById('customize-reset')?.addEventListener('click',()=>{
-    ['swarajPublicAccent','swarajPublicFont','swarajPublicTheme','swarajPublicTextSize','swarajPublicReduceMotion'].forEach(k=>localStorage.removeItem(k)); applyCustomization();
-  });
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMenu();closeCustomizer();}});
-  applyCustomization();
-
-  window.addEventListener('storage',e=>{
-    if(['swarajPublicAccent','swarajPublicFont','swarajPublicTheme','swarajPublicTextSize','swarajPublicReduceMotion'].includes(e.key))applyCustomization();
-  });
-};
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', initPublicHeader, {once:true}); else initPublicHeader();
-</script>
+<script>document.addEventListener('DOMContentLoaded',()=>{const body=document.body,menu=document.getElementById('site-menu-trigger'),panel=document.getElementById('site-mobile-panel'),overlay=document.getElementById('site-mobile-overlay');const closeMenu=()=>{body.classList.remove('mobile-menu-open');menu?.setAttribute('aria-expanded','false');panel?.setAttribute('aria-hidden','true');overlay?.setAttribute('aria-hidden','true')};const openMenu=()=>{body.classList.add('mobile-menu-open');menu?.setAttribute('aria-expanded','true');panel?.setAttribute('aria-hidden','false');overlay?.setAttribute('aria-hidden','false')};menu?.addEventListener('click',()=>body.classList.contains('mobile-menu-open')?closeMenu():openMenu());overlay?.addEventListener('click',closeMenu);panel?.querySelectorAll('a').forEach(a=>a.addEventListener('click',closeMenu));document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});});</script>
