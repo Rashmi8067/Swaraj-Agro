@@ -36,13 +36,19 @@
     </div>
     <div class="customize-option-block">
       <div class="customize-option-head"><strong>Website color</strong><span>Accent</span></div>
-      <div class="customize-swatches">
-        <button class="customize-swatch" data-accent="green" style="background:#146b49" aria-label="Swaraj green" title="Swaraj green"></button>
-        <button class="customize-swatch" data-accent="forest" style="background:#285943" aria-label="Forest green" title="Forest green"></button>
-        <button class="customize-swatch" data-accent="ocean" style="background:#176b82" aria-label="Ocean blue" title="Ocean blue"></button>
-        <button class="customize-swatch" data-accent="indigo" style="background:#4b4b9b" aria-label="Indigo" title="Indigo"></button>
-        <button class="customize-swatch" data-accent="terracotta" style="background:#b85c3c" aria-label="Terracotta" title="Terracotta"></button>
-        <button class="customize-swatch" data-accent="plum" style="background:#74476f" aria-label="Plum" title="Plum"></button>
+      <div class="customize-swatches" role="group" aria-label="Website color choices">
+        <button class="customize-swatch" data-accent="green" style="--swatch:#146b49" aria-label="Swaraj green" title="Swaraj green"><span>✓</span></button>
+        <button class="customize-swatch" data-accent="forest" style="--swatch:#285943" aria-label="Forest green" title="Forest green"><span>✓</span></button>
+        <button class="customize-swatch" data-accent="ocean" style="--swatch:#176b82" aria-label="Ocean blue" title="Ocean blue"><span>✓</span></button>
+        <button class="customize-swatch" data-accent="indigo" style="--swatch:#4b4b9b" aria-label="Indigo" title="Indigo"><span>✓</span></button>
+        <button class="customize-swatch" data-accent="terracotta" style="--swatch:#b85c3c" aria-label="Terracotta" title="Terracotta"><span>✓</span></button>
+        <button class="customize-swatch" data-accent="plum" style="--swatch:#74476f" aria-label="Plum" title="Plum"><span>✓</span></button>
+        <button class="customize-swatch" data-accent="sunset" style="--swatch:linear-gradient(135deg,#f08a3c 0 52%,#c84b4b 52%)" aria-label="Sunset" title="Sunset"><span>✓</span></button>
+        <button class="customize-swatch" data-accent="tealgold" style="--swatch:linear-gradient(135deg,#0b766e 0 52%,#d3a449 52%)" aria-label="Teal gold" title="Teal gold"><span>✓</span></button>
+        <button class="customize-swatch" data-accent="navycoral" style="--swatch:linear-gradient(135deg,#1e3557 0 52%,#f07b70 52%)" aria-label="Navy coral" title="Navy coral"><span>✓</span></button>
+        <button class="customize-swatch" data-accent="sageclay" style="--swatch:linear-gradient(135deg,#78936b 0 52%,#c87b62 52%)" aria-label="Sage clay" title="Sage clay"><span>✓</span></button>
+        <button class="customize-swatch" data-accent="berrycream" style="--swatch:linear-gradient(135deg,#8a3d63 0 52%,#f0dec7 52%)" aria-label="Berry cream" title="Berry cream"><span>✓</span></button>
+        <button class="customize-swatch" data-accent="cobaltmint" style="--swatch:linear-gradient(135deg,#3658a7 0 52%,#7de0c4 52%)" aria-label="Cobalt mint" title="Cobalt mint"><span>✓</span></button>
       </div>
     </div>
     <div class="customize-option-block">
@@ -82,7 +88,10 @@ document.addEventListener('DOMContentLoaded',()=>{
   overlay?.addEventListener('click',closeMenu); panel?.querySelectorAll('nav a').forEach(a=>a.addEventListener('click',closeMenu));
   document.getElementById('modern-menu-close')?.addEventListener('click',closeMenu); document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMenu();closeCustomizer();}});
 
-  const accents={green:['#146b49','#0d5138','#eaf5e8','#c7ef55'],forest:['#285943','#1b4432','#e8f1e9','#b9d7b6'],ocean:['#176b82','#0f5064','#e7f4f7','#8ed7e8'],indigo:['#4b4b9b','#373775','#eeeeff','#b8b8ff'],terracotta:['#b85c3c','#8f432c','#fff0e9','#f0b59e'],plum:['#74476f','#573353','#f6eaf4','#d9a9cf']};
+  const accents={
+    green:['#146b49','#0d5138','#eaf5e8','#c7ef55'],forest:['#285943','#1b4432','#e8f1e9','#b9d7b6'],ocean:['#176b82','#0f5064','#e7f4f7','#8ed7e8'],indigo:['#4b4b9b','#373775','#eeeeff','#b8b8ff'],terracotta:['#b85c3c','#8f432c','#fff0e9','#f0b59e'],plum:['#74476f','#573353','#f6eaf4','#d9a9cf'],
+    sunset:['#d65b3f','#8e3245','#fff0ea','#ffd0ae'],tealgold:['#0b766e','#07564f','#e4f5f1','#f3cf76'],navycoral:['#1e3557','#14243b','#eaf0fa','#f6a6a0'],sageclay:['#78936b','#566c4d','#eef3eb','#d9a68c'],berrycream:['#8a3d63','#642c49','#faeef4','#e4c9ad'],cobaltmint:['#3658a7','#263e78','#edf1ff','#8be2c4']
+  };
   const fontFallback='DM Sans';
   const customizeSheet=document.getElementById('customize-sheet');
   const openCustomizer=()=>{
@@ -90,6 +99,7 @@ document.addEventListener('DOMContentLoaded',()=>{
     closeMenu();
     customizeSheet.hidden=false; customizeSheet.setAttribute('aria-hidden','false');
     document.body.classList.add('customize-open');
+    requestAnimationFrame(()=>{document.getElementById('customize-sheet-close')?.focus();});
     document.getElementById('mobile-customize-open')?.setAttribute('aria-expanded','true');
   };
   const closeCustomizer=()=>{
@@ -108,12 +118,13 @@ document.addEventListener('DOMContentLoaded',()=>{
     root.style.setProperty('--user-font',`'${font}',sans-serif`);
     root.style.setProperty('--user-accent',a[0]); root.style.setProperty('--user-accent2',a[1]);
     root.style.setProperty('--user-soft',a[2]); root.style.setProperty('--user-highlight',a[3]);
-    root.dataset.publicTheme=mode; root.dataset.publicTextSize=textSize;
+    root.dataset.publicTheme=mode; root.dataset.publicTextSize=textSize; root.dataset.publicFont=font;
+    body.classList.add('public-custom-font');
     if(reduceMotion)root.dataset.reduceMotion='true'; else delete root.dataset.reduceMotion;
-    document.querySelectorAll('.customize-swatch').forEach(b=>b.classList.toggle('active',b.dataset.accent===accent));
-    document.querySelectorAll('.customize-font-btn').forEach(b=>b.classList.toggle('active',b.dataset.font===font));
-    document.querySelectorAll('.customize-mode-btn').forEach(b=>b.classList.toggle('active',b.dataset.mode===mode));
-    document.querySelectorAll('.customize-text-btn').forEach(b=>b.classList.toggle('active',b.dataset.textSize===textSize));
+    document.querySelectorAll('.customize-swatch').forEach(b=>{const on=b.dataset.accent===accent;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
+    document.querySelectorAll('.customize-font-btn').forEach(b=>{const on=b.dataset.font===font;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
+    document.querySelectorAll('.customize-mode-btn').forEach(b=>{const on=b.dataset.mode===mode;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
+    document.querySelectorAll('.customize-text-btn').forEach(b=>{const on=b.dataset.textSize===textSize;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
     const motion=document.getElementById('customize-motion-toggle'); if(motion){motion.classList.toggle('active',reduceMotion);motion.setAttribute('aria-checked',String(reduceMotion));}
   };
   document.getElementById('mobile-customize-open')?.addEventListener('click',openCustomizer);
@@ -133,5 +144,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   });
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeMenu();closeCustomizer();}});
   applyCustomization();
-});
+
+  window.addEventListener('storage',e=>{
+    if(['swarajPublicAccent','swarajPublicFont','swarajPublicTheme','swarajPublicTextSize','swarajPublicReduceMotion'].includes(e.key))applyCustomization();
+  });
+)
 </script>
